@@ -387,7 +387,7 @@
             },
             tick() { this.play(800, 'square', 0.05, 0.1); },
             pass() { this.play(300, 'sine', 0.3, 0.4); setTimeout(()=>this.play(400, 'sine', 0.4, 0.4), 100); },
-            hint() { this.play(600, 'sine', 0.3, 0.3); },
+            hint() { this.play(6000, 'sine', 0.3, 0.3); },
             correct() { 
                 this.play(523.25, 'triangle', 0.2, 0.5); 
                 setTimeout(()=>this.play(659.25, 'triangle', 0.2, 0.5), 100); 
@@ -451,7 +451,7 @@
                 { name: 'Equipo 3', score: 0, colorClasses: 'border-emerald-500 text-emerald-400 bg-emerald-900/30 shadow-[0_0_20px_#10b981]' },
                 { name: 'Equipo 4', score: 0, colorClasses: 'border-amber-500 text-amber-400 bg-amber-900/30 shadow-[0_0_20px_#f59e0b]' }
             ],
-            currentTeam: 0, time: 600, timerInterval: null, isActive: false, modalOpen: false,
+            currentTeam: 0, time: 6000, timerInterval: null, isActive: false, modalOpen: false,
 
             start() {
                 try {
@@ -469,7 +469,7 @@
                     this.currentQIndex = 0;
                     this.currentTeam = 0;
                     this.teams.forEach(t => t.score = 0);
-                    this.time = 600;
+                    this.time = 6000;
                     this.modalOpen = false;
                     
                     document.getElementById('start-screen').style.display = 'none';
