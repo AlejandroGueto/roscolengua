@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rosco | Lengua y Literatura 1º Bachillerato</title>
+    <title>Rosco Premium | Lengua y Literatura 1º Bachillerato</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
     
@@ -351,24 +351,35 @@
             init() {
                 try {
                     window.AudioContext = window.AudioContext || window.webkitAudioContext;
-                    this.ctx = new AudioContext();
-                    this.master = this.ctx.createGain();
-                    this.master.gain.value = 0.3;
-                    this.master.connect(this.ctx.destination);
-                    if(this.ctx.state === 'suspended') this.ctx.resume();
+                    if (!this.ctx) {
+                        this.ctx = new AudioContext();
+                        this.master = this.ctx.createGain();
+                        this.master.gain.value = 0.3;
+                        this.master.connect(this.ctx.destination);
+                    }
+                    if(this.ctx.state === 'suspended') {
+                        this.ctx.resume();
+                    }
                     this.enabled = true;
-                } catch(e) { console.log("Audio no soportado"); }
+                } catch(e) { 
+                    console.log("Audio no soportado o bloqueado por el navegador.");
+                    this.enabled = false; 
+                }
             },
             play(freq, type, dur, vol=1) {
-                if(!this.enabled) return;
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-                osc.type = type;
-                osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-                gain.gain.setValueAtTime(vol, this.ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + dur);
-                osc.connect(gain); gain.connect(this.master);
-                osc.start(); osc.stop(this.ctx.currentTime + dur);
+                if(!this.enabled || !this.ctx) return;
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                    gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + dur);
+                    osc.connect(gain); gain.connect(this.master);
+                    osc.start(); osc.stop(this.ctx.currentTime + dur);
+                } catch(e) {
+                    // Silenciar errores para no bloquear el juego
+                }
             },
             tick() { this.play(800, 'square', 0.05, 0.1); },
             pass() { this.play(300, 'sine', 0.3, 0.4); setTimeout(()=>this.play(400, 'sine', 0.4, 0.4), 100); },
@@ -450,6 +461,7 @@
             modalOpen: false,
 
             start() {
+                // Iniciar Audio SIEMPRE a partir de un click directo del usuario
                 AudioFX.init();
                 FX.init();
                 
@@ -458,6 +470,7 @@
                 this.currentTeam = 0;
                 this.teams.forEach(t => t.score = 0);
                 this.time = 600;
+                this.modalOpen = false;
                 
                 document.getElementById('start-screen').style.display = 'none';
                 const gameScreen = document.getElementById('game-screen');
@@ -466,11 +479,16 @@
 
                 this.renderRosco();
                 this.updateUI();
-                this.loadQuestion();
-                this.resumeTimer();
                 this.isActive = true;
                 
-                setTimeout(() => document.getElementById('answer-input').focus(), 100);
+                this.loadQuestion();
+                this.resumeTimer();
+                
+                // Pequeño delay para asegurar que el DOM está listo antes de hacer focus
+                setTimeout(() => {
+                    const input = document.getElementById('answer-input');
+                    if(input) input.focus();
+                }, 150);
             },
 
             renderRosco() {
@@ -719,7 +737,7 @@
                     e.preventDefault();
                     Game.closeExplanation();
                 }
-                return; // Bloquear otras teclas
+                return; // Bloquear otras teclas mientras el modal está abierto
             }
 
             // Manejo cuando el Modal está CERRADO (Jugando)
@@ -728,9 +746,9 @@
                 Game.checkAnswer();
             } else if (e.code === 'Space') {
                 const input = document.getElementById('answer-input');
-                // Solo pasapalabra con espacio si el input está vacío
-                if(input.value.trim() === '') {
-                    e.preventDefault();
+                // Solo pasapalabra con espacio si el input está vacío y estamos enfocados o no
+                if(document.activeElement !== input || input.value.trim() === '') {
+                    e.preventDefault(); // Evita que la pantalla baje o se escriba un espacio
                     Game.pasapalabra();
                 }
             }
