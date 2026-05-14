@@ -14,7 +14,6 @@
             --neon-green: #10b981;
             --neon-red: #ef4444;
             --neon-orange: #f59e0b;
-            --neon-purple: #8b5cf6;
         }
 
         body {
@@ -25,15 +24,15 @@
             user-select: none;
         }
 
-        .rosco-container {
+        /* Contenedor del rosco irrompible */
+        .rosco-wrapper {
             position: relative;
-            width: 340px;
-            height: 340px;
+            width: 320px;
+            height: 320px;
             margin: 0 auto;
-            z-index: 10;
         }
         @media (min-width: 768px) {
-            .rosco-container { width: 450px; height: 450px; }
+            .rosco-wrapper { width: 420px; height: 420px; }
         }
 
         .letter {
@@ -49,9 +48,9 @@
             transform: translate(-50%, -50%);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-            cursor: default;
             color: white;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            z-index: 20;
         }
         @media (min-width: 768px) {
             .letter { width: 44px; height: 44px; font-size: 20px; }
@@ -67,7 +66,7 @@
             background: linear-gradient(135deg, #b45309, #f59e0b);
             border: 2px solid #fcd34d;
             transform: translate(-50%, -50%) scale(1.4);
-            z-index: 20;
+            z-index: 30;
             box-shadow: 0 0 20px rgba(245, 158, 11, 0.8);
             animation: pulse-active 1.5s infinite;
         }
@@ -92,40 +91,19 @@
             50% { transform: translateX(8px); }
             75% { transform: translateX(-8px); }
         }
-        @keyframes popIn {
-            from { opacity: 0; transform: scale(0.9) translateY(20px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
         
         .animate-shake { animation: shake 0.4s ease-in-out; }
-        .animate-pop { animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 
-        /* Estilo Cristal (Glassmorphism) */
         .glass-panel {
             background: rgba(30, 41, 59, 0.7);
             backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
-        /* Lienzo de fondo */
         #fx-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none; z-index: 0; opacity: 0.6;
-        }
-
-        /* Input premium */
-        .premium-input {
-            background: rgba(15, 23, 42, 0.8);
-            border: 2px solid rgba(59, 130, 246, 0.4);
-            color: #fff;
-            transition: all 0.3s;
-        }
-        .premium-input:focus {
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
-            outline: none;
         }
     </style>
 </head>
@@ -134,110 +112,91 @@
     <!-- Fondo de Partículas -->
     <canvas id="fx-canvas"></canvas>
 
+    <!-- PANTALLA DE INICIO -->
     <div id="start-screen" class="relative z-10 min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-blue-900/20 to-slate-900">
-        <div class="glass-panel p-8 md:p-12 rounded-3xl max-w-2xl w-full text-center animate-pop border-t border-blue-500/30">
-            <div class="mb-6 flex justify-center">
-                <div class="w-20 h-20 rounded-full bg-blue-600/20 flex items-center justify-center border-2 border-blue-500/50 shadow-[0_0_30px_rgba(59,130,246,0.3)]">
-                    <svg class="w-10 h-10 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                </div>
-            </div>
-            <h1 class="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-teal-300 to-blue-500 mb-4 drop-shadow-sm">
+        <div class="glass-panel p-8 md:p-12 rounded-3xl max-w-2xl w-full text-center border-t border-blue-500/30">
+            <h1 class="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-teal-300 to-blue-500 mb-4">
                 Rosco Premium
             </h1>
             <h2 class="text-xl md:text-2xl text-blue-200 font-medium mb-8">Lengua y Literatura · 1º Bachillerato</h2>
             
             <div class="text-left bg-slate-800/50 p-6 rounded-2xl mb-10 text-slate-300 border border-slate-700/50">
-                <h3 class="text-blue-400 font-bold mb-3 uppercase tracking-wider text-sm flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    Reglas del Torneo
-                </h3>
+                <h3 class="text-blue-400 font-bold mb-3 uppercase tracking-wider text-sm">Reglas del Torneo</h3>
                 <ul class="space-y-3 text-sm md:text-base">
-                    <li class="flex items-start gap-2"><span class="text-blue-500">▹</span> Se juega por equipos. El turno salta al fallar o hacer "Pasapalabra".</li>
-                    <li class="flex items-start gap-2"><span class="text-blue-500">▹</span> <strong class="text-white">Novedad:</strong> Tras cada respuesta, el tiempo se detiene para mostrar una explicación pedagógica.</li>
-                    <li class="flex items-start gap-2"><span class="text-blue-500">▹</span> El tiempo total es de <strong class="text-emerald-400">10 minutos</strong> de juego efectivo (el reloj se pausa en las explicaciones).</li>
-                    <li class="flex items-start gap-2"><span class="text-blue-500">▹</span> Usa <strong>[Enter]</strong> para comprobar/continuar y <strong>[Espacio]</strong> para pasar palabra.</li>
+                    <li><strong class="text-blue-500">▹</strong> Se juega por equipos. El turno salta al fallar o pasar.</li>
+                    <li><strong class="text-blue-500">▹</strong> Tras cada respuesta, el tiempo se detiene para mostrar una explicación.</li>
+                    <li><strong class="text-blue-500">▹</strong> El tiempo total es de <strong class="text-emerald-400">10 minutos</strong>.</li>
+                    <li><strong class="text-blue-500">▹</strong> Usa <strong>[Enter]</strong> para comprobar y <strong>[Espacio]</strong> para pasar.</li>
                 </ul>
             </div>
 
-            <button onclick="Game.start()" class="w-full relative group overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 to-blue-500 text-white font-black py-5 px-8 text-xl md:text-2xl transition-all shadow-[0_0_40px_rgba(59,130,246,0.4)] hover:shadow-[0_0_60px_rgba(59,130,246,0.6)] hover:scale-[1.02]">
-                <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-                <span class="relative z-10 flex items-center justify-center gap-3">
-                    COMENZAR EL JUEGO
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                </span>
+            <button onclick="Game.start()" class="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white font-black py-5 px-8 text-xl md:text-2xl rounded-2xl transition-all shadow-[0_0_40px_rgba(59,130,246,0.4)] hover:scale-105">
+                COMENZAR EL JUEGO
             </button>
         </div>
     </div>
 
+    <!-- PANTALLA DEL JUEGO -->
     <div id="game-screen" class="hidden relative z-10 min-h-screen flex-col items-center py-6 px-4 w-full bg-gradient-to-b from-slate-900 to-[#0a0f1a]">
         
         <!-- Marcadores Equipos -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-6xl mb-8 px-2">
             <div id="team-0" class="glass-panel flex flex-col items-center rounded-2xl p-4 border-2 transition-all duration-300">
-                <span class="text-blue-400 font-bold uppercase tracking-widest text-xs mb-2">Equipo 1</span>
-                <span id="score-0" class="text-3xl md:text-4xl font-black text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">0</span>
+                <span class="text-blue-400 font-bold uppercase text-xs mb-2">Equipo 1</span>
+                <span id="score-0" class="text-3xl md:text-4xl font-black text-white">0</span>
             </div>
             <div id="team-1" class="glass-panel flex flex-col items-center rounded-2xl p-4 border-2 transition-all duration-300">
-                <span class="text-red-400 font-bold uppercase tracking-widest text-xs mb-2">Equipo 2</span>
-                <span id="score-1" class="text-3xl md:text-4xl font-black text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">0</span>
+                <span class="text-red-400 font-bold uppercase text-xs mb-2">Equipo 2</span>
+                <span id="score-1" class="text-3xl md:text-4xl font-black text-white">0</span>
             </div>
             <div id="team-2" class="glass-panel flex flex-col items-center rounded-2xl p-4 border-2 transition-all duration-300">
-                <span class="text-emerald-400 font-bold uppercase tracking-widest text-xs mb-2">Equipo 3</span>
-                <span id="score-2" class="text-3xl md:text-4xl font-black text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">0</span>
+                <span class="text-emerald-400 font-bold uppercase text-xs mb-2">Equipo 3</span>
+                <span id="score-2" class="text-3xl md:text-4xl font-black text-white">0</span>
             </div>
             <div id="team-3" class="glass-panel flex flex-col items-center rounded-2xl p-4 border-2 transition-all duration-300">
-                <span class="text-amber-400 font-bold uppercase tracking-widest text-xs mb-2">Equipo 4</span>
-                <span id="score-3" class="text-3xl md:text-4xl font-black text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">0</span>
+                <span class="text-amber-400 font-bold uppercase text-xs mb-2">Equipo 4</span>
+                <span id="score-3" class="text-3xl md:text-4xl font-black text-white">0</span>
             </div>
         </div>
 
-        <!-- Rosco y Controles Centrales -->
-        <div class="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl gap-10 xl:gap-20 relative">
+        <!-- Rosco y Controles -->
+        <div class="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl gap-10 xl:gap-20">
             
-            <!-- Contenedor del Círculo -->
-            <div class="rosco-container" id="rosco-circle">
-                <!-- Temporizador Central con efecto Neón -->
-                <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-                    <div id="timer-container" class="flex flex-col items-center justify-center bg-slate-900/90 rounded-full w-24 h-24 md:w-32 md:h-32 border-4 border-blue-500/50 shadow-[0_0_30px_rgba(59,130,246,0.3)] backdrop-blur-md transition-colors duration-500">
-                        <span id="timer" class="text-4xl md:text-5xl font-black text-white tabular-nums tracking-tighter">600</span>
-                    </div>
+            <!-- EL ROSCO (Irrompible) -->
+            <div class="rosco-wrapper flex items-center justify-center">
+                <!-- Reloj Central Aislado -->
+                <div id="timer-container" class="absolute z-10 flex flex-col items-center justify-center bg-slate-900/90 rounded-full w-24 h-24 md:w-32 md:h-32 border-4 border-blue-500/50 shadow-[0_0_30px_rgba(59,130,246,0.3)] backdrop-blur-md transition-colors">
+                    <span id="timer" class="text-4xl md:text-5xl font-black text-white">600</span>
                 </div>
+                <!-- Contenedor exclusivo para las letras -->
+                <div id="rosco-letters" class="absolute inset-0 z-20"></div>
             </div>
 
-            <div class="w-full max-w-lg glass-panel p-8 rounded-3xl flex flex-col z-20 shadow-2xl border-t border-slate-600/50 relative overflow-hidden">
-                <!-- Destello de fondo -->
-                <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
-
-                <div class="flex items-center justify-between mb-6 relative">
-                    <div id="current-team-indicator" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest border shadow-lg transition-all">
-                        <div class="w-2 h-2 rounded-full bg-current animate-pulse"></div>
+            <!-- Panel de Pregunta -->
+            <div class="w-full max-w-lg glass-panel p-8 rounded-3xl flex flex-col shadow-2xl relative overflow-hidden">
+                <div class="flex items-center justify-between mb-4">
+                    <div id="current-team-indicator" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase border">
                         <span id="team-name-display">TURNO</span>
                     </div>
                 </div>
 
-                <div class="flex items-baseline gap-3 mb-4 relative">
-                    <span id="question-letter" class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400">A</span>
-                    <span id="question-type" class="text-blue-300 font-bold uppercase tracking-widest text-sm bg-blue-900/40 px-3 py-1 rounded-lg border border-blue-500/20"></span>
+                <div class="flex items-baseline gap-3 mb-2">
+                    <span id="question-letter" class="text-5xl font-black text-white">A</span>
+                    <span id="question-type" class="text-blue-300 font-bold uppercase text-sm bg-blue-900/40 px-3 py-1 rounded-lg"></span>
                 </div>
                 
-                <p id="question-text" class="text-xl md:text-2xl text-slate-100 mb-8 min-h-[120px] font-medium leading-relaxed relative"></p>
+                <p id="question-text" class="text-xl md:text-2xl text-slate-100 mb-8 min-h-[120px] font-medium leading-relaxed"></p>
                 
-                <div id="input-container" class="flex flex-col gap-4 relative">
-                    <input type="text" id="answer-input" autocomplete="off" placeholder="Escribe la respuesta..." 
-                        class="premium-input w-full rounded-2xl px-5 py-4 text-xl md:text-2xl placeholder-slate-500 text-center font-bold tracking-wide">
+                <div id="input-container" class="flex flex-col gap-4">
+                    <input type="text" id="answer-input" autocomplete="off" placeholder="Respuesta..." 
+                        class="bg-slate-800 border-2 border-blue-500/40 text-white w-full rounded-2xl px-5 py-4 text-xl md:text-2xl text-center font-bold outline-none focus:border-blue-500">
                     
                     <div class="flex gap-3 mt-2">
-                        <button onclick="Game.checkAnswer()" class="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-bold py-4 px-4 rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] transform hover:-translate-y-1">
-                            <span class="flex items-center justify-center gap-2">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                Comprobar [Ent]
-                            </span>
+                        <button onclick="Game.checkAnswer()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl shadow-lg">
+                            Comprobar
                         </button>
-                        <button onclick="Game.pasapalabra()" class="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white font-bold py-4 px-4 rounded-xl transition-all shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] transform hover:-translate-y-1">
-                            <span class="flex items-center justify-center gap-2">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg>
-                                Pasapalabra [Esp]
-                            </span>
+                        <button onclick="Game.pasapalabra()" class="flex-1 bg-amber-600 hover:bg-amber-500 text-white font-bold py-4 rounded-xl shadow-lg">
+                            Pasapalabra
                         </button>
                     </div>
                 </div>
@@ -245,125 +204,82 @@
         </div>
     </div>
 
-    <div id="explanation-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-lg p-4 transition-opacity duration-300 opacity-0">
-        <div id="modal-panel" class="bg-slate-800 border-2 rounded-3xl max-w-2xl w-full shadow-[0_0_50px_rgba(0,0,0,0.8)] overflow-hidden transform scale-95 transition-transform duration-300">
+    <!-- MODAL DE EXPLICACIÓN -->
+    <div id="explanation-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-md p-4 transition-opacity duration-300 opacity-0">
+        <div id="modal-panel" class="bg-slate-800 border-2 rounded-3xl max-w-2xl w-full shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300">
             
-            <!-- Cabecera del modal -->
-            <div id="modal-header" class="p-6 text-center border-b border-white/10">
-                <div id="modal-icon" class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center border-4"></div>
-                <h2 id="modal-title" class="text-3xl font-black uppercase tracking-widest text-white mb-2">¡Correcto!</h2>
+            <div id="modal-header" class="p-6 text-center border-b">
+                <h2 id="modal-title" class="text-3xl font-black uppercase text-white mb-2">Resultado</h2>
                 <p class="text-slate-300 text-lg">La respuesta correcta era: <strong id="modal-answer" class="text-white text-xl ml-2 bg-black/30 px-3 py-1 rounded-lg"></strong></p>
             </div>
 
-            <!-- Cuerpo del modal (Explicación) -->
             <div class="p-8 bg-slate-900/50">
-                <h3 class="text-blue-400 font-bold mb-3 uppercase text-sm tracking-wider flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
-                    Aclaración Pedagógica
-                </h3>
-                <p id="modal-explanation" class="text-lg text-slate-300 leading-relaxed font-light"></p>
+                <h3 class="text-blue-400 font-bold mb-3 uppercase text-sm tracking-wider">Aclaración Pedagógica</h3>
+                <p id="modal-explanation" class="text-lg text-slate-300 leading-relaxed"></p>
             </div>
 
-            <!-- Pie del modal -->
             <div class="p-6 bg-slate-800 text-center">
-                <button onclick="Game.closeExplanation()" class="bg-white text-slate-900 hover:bg-slate-200 font-black py-4 px-12 rounded-xl text-lg transition-transform hover:scale-105 shadow-lg">
+                <button onclick="Game.closeExplanation()" class="bg-white text-slate-900 font-black py-4 px-12 rounded-xl text-lg hover:scale-105 transition-transform">
                     Continuar [Enter]
                 </button>
             </div>
         </div>
     </div>
 
+    <!-- PANTALLA FINAL -->
     <div id="end-screen" class="hidden relative z-10 min-h-screen flex flex-col items-center justify-center p-4 bg-[#0a0f1a]">
-        <div class="glass-panel p-10 md:p-14 rounded-3xl max-w-2xl w-full text-center border-t border-blue-500/30">
-            <h2 class="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-600 mb-4 uppercase tracking-wider">Torneo Finalizado</h2>
-            <p id="end-message" class="text-2xl text-slate-300 mb-10 font-medium"></p>
-            
-            <div id="podium-container" class="flex flex-col gap-4 mb-10 w-full text-left">
-                <!-- Podium generado dinámicamente -->
-            </div>
-
-            <button onclick="location.reload()" class="w-full relative overflow-hidden rounded-xl bg-slate-700 hover:bg-slate-600 border border-slate-500 text-white font-bold py-5 px-8 text-xl transition-all shadow-lg">
+        <div class="glass-panel p-10 rounded-3xl max-w-2xl w-full text-center">
+            <h2 class="text-5xl font-black text-amber-500 mb-4 uppercase">Torneo Finalizado</h2>
+            <p id="end-message" class="text-2xl text-white mb-10 font-medium"></p>
+            <div id="podium-container" class="flex flex-col gap-4 mb-10 w-full text-left"></div>
+            <button onclick="location.reload()" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-5 rounded-xl text-xl">
                 Jugar Nueva Partida
             </button>
         </div>
     </div>
 
     <script>
-        /**
-         * BASE DE DATOS MEJORADA
-         * Incluye la nueva propiedad 'explanation' para el modo pedagógico.
-         */
+        // BASE DE DATOS
         const DATABASE = [
-            { letter: 'A', type: 'Empieza por', question: 'Tipo de texto en el que se defiende una idea o tesis aportando razones o argumentos.', answers: ['argumentacion', 'argumentativo', 'texto argumentativo'], 
-              explanation: 'La argumentación busca persuadir al receptor sobre una tesis mediante argumentos racionales (datos, ejemplos, autoridad) o emotivos. Es la estructura fundamental en ensayos, debates y artículos de opinión.' },
-            { letter: 'B', type: 'Empieza por', question: 'Movimiento literario del siglo XVII caracterizado por el pesimismo, la complejidad, el conceptismo y el culteranismo.', answers: ['barroco'], 
-              explanation: 'El Barroco refleja una época de crisis en España. Destacan dos corrientes: el Conceptismo (asociación ingeniosa de ideas, liderado por Quevedo) y el Culteranismo (belleza formal y sintaxis compleja, liderado por Góngora).' },
-            { letter: 'C', type: 'Empieza por', question: 'Oración compuesta formada por proposiciones sintácticamente independientes unidas por un nexo.', answers: ['coordinada', 'oracion coordinada'], 
-              explanation: 'A diferencia de las subordinadas, las coordinadas están al mismo nivel sintáctico. Si eliminas el nexo (y, pero, o) y separas las proposiciones, ambas siguen teniendo sentido completo e independencia gramatical.' },
-            { letter: 'D', type: 'Empieza por', question: 'Modalidad textual que explica detalladamente cómo son las personas, los lugares o los objetos.', answers: ['descripcion', 'descriptivo', 'texto descriptivo'], 
-              explanation: 'Describir es "pintar con palabras". Lingüísticamente, abundan los adjetivos valorativos, los verbos copulativos y las figuras retóricas como la prosopografía (físico) o la etopeya (psicología).' },
-            { letter: 'E', type: 'Empieza por', question: 'Género literario narrativo, tradicionalmente en verso, en el que se relatan hazañas de héroes.', answers: ['epica', 'poesia epica', 'genero epico'], 
-              explanation: 'La épica canta las hazañas de un héroe que representa los valores de su pueblo. En la Edad Media española, el máximo exponente de la épica son los Cantares de Gesta, como el "Cantar de mio Cid".' },
-            { letter: 'F', type: 'Empieza por', question: 'Función del lenguaje que se utiliza para abrir, mantener, comprobar o cerrar el canal de comunicación.', answers: ['fatica', 'funcion fatica', 'de contacto'], 
-              explanation: 'Se centra exclusivamente en el CANAL físico. Frases como "¿Me oyes?", "Hola" o "Ajá, sí" no transmiten información nueva, solo verifican que la comunicación fluye correctamente.' },
-            { letter: 'G', type: 'Empieza por', question: 'Nombre o apellido del poeta renacentista español que consolidó el endecasílabo y los sonetos.', answers: ['garcilaso', 'garcilaso de la vega'], 
-              explanation: 'Garcilaso de la Vega introdujo en España la métrica italiana (endecasílabos y heptasílabos) y estrofas como el soneto y la lira. Sus temas centrales son el amor idealizado, el locus amoenus y la mitología.' },
-            { letter: 'H', type: 'Empieza por', question: 'Figura literaria que consiste en alterar el orden lógico o gramatical de las palabras en una oración.', answers: ['hiperbaton'], 
-              explanation: 'Fue muy usado en el Barroco y Renacimiento para imitar la elegante sintaxis del latín (que colocaba el verbo al final) o simplemente para cuadrar la rima. Ej: "Del salón en el ángulo oscuro".' },
-            { letter: 'I', type: 'Empieza por', question: 'Figura literaria que consiste en dar a entender lo contrario de lo que se dice expresamente.', answers: ['ironia'], 
-              explanation: 'Se dice lo opuesto a lo que se piensa, pero el contexto permite al receptor descodificar el verdadero significado. Si esa ironía tiene un tono cruel, hiriente y ofensivo, se denomina Sarcasmo.' },
-            { letter: 'J', type: 'Empieza por', question: 'Breves composiciones líricas populares en lengua mozárabe, cantadas por mujeres.', answers: ['jarcha', 'jarchas'], 
-              explanation: 'Son los textos literarios más antiguos que conservamos en lenguas romances ibéricas (siglo XI). Solían ser lamentos amorosos de una chica a su madre y los poetas árabes las incluían al final de sus moaxajas.' },
-            { letter: 'L', type: 'Empieza por', question: 'Nombre de pila del creador de la Comedia Nueva en el Barroco, apodado Fénix de los Ingenios.', answers: ['lope', 'lope de vega'], 
-              explanation: 'Lope de Vega rompió las reglas clásicas del teatro (las 3 unidades: acción, tiempo y lugar) con su obra "Arte nuevo de hacer comedias". Mezcló lo trágico y lo cómico para entretener al público general.' },
-            { letter: 'M', type: 'Empieza por', question: 'Identificación de un término real con uno imaginario por su relación de semejanza.', answers: ['metafora'], 
-              explanation: 'Sustituye el Término Real (R) por el Imaginario (I). Si digo "Tus cabellos son oro", el oro (I) sustituye al rubio del cabello (R) basándose en su semejanza física de color y brillo.' },
-            { letter: 'N', type: 'Empieza por', question: 'Voz ficticia que cuenta la historia y organiza la trama en un texto literario.', answers: ['narrador'], 
-              explanation: 'Es vital no confundir al narrador (ente ficticio creado en el texto) con el autor (persona real histórica). El narrador puede ser interno (protagonista, testigo) o externo (omnisciente, objetivista).' },
-            { letter: 'Ñ', type: 'Contiene la', question: 'Texto periodístico o académico, normalmente breve, que valora críticamente una obra o exposición.', answers: ['reseña'], 
-              explanation: 'Es un género discursivo híbrido (mezcla lo expositivo y lo argumentativo). Informa objetivamente sobre el contenido de la obra, pero su rasgo clave es que incluye la valoración crítica personal del autor.' },
-            { letter: 'O', type: 'Empieza por', question: 'Figura retórica que combina dos palabras de significado opuesto que originan un nuevo sentido.', answers: ['oximoron'], 
-              explanation: 'Crea significados poéticos profundos al chocar dos conceptos lógicamente incompatibles en el mismo sintagma. Ejemplos clásicos: "música callada", "fuego helado" o "luz oscura".' },
-            { letter: 'P', type: 'Empieza por', question: 'Unión de dos o más verbos (auxiliar + enlace + principal) que funcionan como un solo núcleo.', answers: ['perifrasis', 'perifrasis verbal'], 
-              explanation: 'Aportan matices de aspecto o modo que los tiempos simples no pueden expresar. Por ejemplo, "tengo que estudiar" (obligación) significa algo muy distinto a simplemente decir "estudio" (acción neutra).' },
-            { letter: 'Q', type: 'Empieza por', question: 'Apellido del principal autor del Conceptismo literario en el Barroco español.', answers: ['quevedo', 'francisco de quevedo'], 
-              explanation: 'Francisco de Quevedo es el maestro del Conceptismo. Su estilo requería gran agudeza mental, basándose en dobles sentidos, polisemia, retruécanos y una visión profundamente pesimista y satírica de España.' },
-            { letter: 'R', type: 'Empieza por', question: 'Movimiento literario del siglo XIX que exalta el "yo", la libertad y los sentimientos desbordados.', answers: ['romanticismo'], 
-              explanation: 'Surgió como una rebelión contra la fría Razón de la Ilustración (Neoclasicismo). Prima el subjetivismo, la ambientación en paisajes nocturnos y tormentosos, el amor trágico y el ansia de libertad absoluta.' },
-            { letter: 'S', type: 'Empieza por', question: 'Oración compuesta que carece de independencia sintáctica y depende de otra principal.', answers: ['subordinada', 'oracion subordinada'], 
-              explanation: 'Actúan como un sintagma incrustado dentro de la oración principal. Según su función, pueden ser sustantivas (equivalen a un SN), adjetivas (equivalen a un S.Adj) o adverbiales (equivalen a un S.Adv).' },
-            { letter: 'T', type: 'Empieza por', question: 'Idea principal, opinión o postura que un autor defiende a lo largo de un texto argumentativo.', answers: ['tesis'], 
-              explanation: 'Es la columna vertebral del texto. Si la tesis aparece al principio, la estructura es deductiva. Si los argumentos conducen a la tesis al final del texto, la estructura es inductiva.' },
-            { letter: 'U', type: 'Contiene la', question: 'Función sintáctica que concuerda obligatoriamente en número y persona con el verbo.', answers: ['sujeto'], 
-              explanation: 'El truco infalible: cambia el número del verbo (de singular a plural). La palabra que obligatoriamente tengas que cambiar para que la frase tenga sentido, es el Sujeto. ¡Ojo, nunca empieza por preposición!' },
-            { letter: 'V', type: 'Empieza por', question: 'Elemento gramatical extraoracional que sirve para llamar la atención del receptor.', answers: ['vocativo'], 
-              explanation: 'Va siempre separado por comas del resto de la frase. No es el sujeto, es un elemento puramente apelativo. En "María, ven aquí", María es vocativo y el sujeto está omitido (Tú).' },
-            { letter: 'X', type: 'Contiene la', question: 'Parte de la gramática que estudia cómo se combinan las palabras para formar oraciones.', answers: ['sintaxis'], 
-              explanation: 'Es fundamental para comprender cómo se construyen los significados complejos. Estudia las funciones lógicas de la oración: Sujeto, CD, CI, Atributo, Complemento Predicativo, Régimen, etc.' },
-            { letter: 'Y', type: 'Contiene la', question: 'Poema narrativo extenso de tono grandilocuente que relata acciones heroicas de la Antigüedad.', answers: ['epopeya'], 
-              explanation: 'Es la épica de la Antigüedad Clásica. Obras universales como la Ilíada o la Odisea de Homero son epopeyas, caracterizadas por la intervención directa de los dioses en el destino de grandes héroes.' },
-            { letter: 'Z', type: 'Contiene la', question: 'Accidente gramatical del verbo que indica si el sujeto realiza la acción o la recibe.', answers: ['voz'], 
-              explanation: 'En la voz ACTIVA, el sujeto hace la acción ("Juan lee el libro"). En la voz PASIVA, el sujeto la sufre, llamado sujeto paciente ("El libro es leído por Juan"). Para la pasiva se usa el verbo "ser" + participio.' }
+            { letter: 'A', type: 'Empieza por', question: 'Tipo de texto en el que se defiende una idea o tesis aportando razones o argumentos.', answers: ['argumentacion', 'argumentativo', 'texto argumentativo'], explanation: 'La argumentación busca persuadir al receptor sobre una tesis mediante argumentos racionales o emotivos. Es fundamental en ensayos y debates.' },
+            { letter: 'B', type: 'Empieza por', question: 'Movimiento literario del siglo XVII caracterizado por el pesimismo, la complejidad, el conceptismo y el culteranismo.', answers: ['barroco'], explanation: 'El Barroco refleja una época de crisis. Destacan dos corrientes: el Conceptismo (Quevedo) y el Culteranismo (Góngora).' },
+            { letter: 'C', type: 'Empieza por', question: 'Oración compuesta formada por proposiciones sintácticamente independientes unidas por un nexo.', answers: ['coordinada', 'oracion coordinada'], explanation: 'A diferencia de las subordinadas, las coordinadas están al mismo nivel sintáctico. Ambas tienen sentido completo por separado.' },
+            { letter: 'D', type: 'Empieza por', question: 'Modalidad textual que explica detalladamente cómo son las personas, los lugares o los objetos.', answers: ['descripcion', 'descriptivo', 'texto descriptivo'], explanation: 'Describir es "pintar con palabras". Abundan los adjetivos valorativos, los verbos copulativos y las figuras retóricas.' },
+            { letter: 'E', type: 'Empieza por', question: 'Género literario narrativo, tradicionalmente en verso, en el que se relatan hazañas de héroes.', answers: ['epica', 'poesia epica', 'genero epico'], explanation: 'La épica canta las hazañas de un héroe que representa los valores de su pueblo. Ejemplo: el "Cantar de mio Cid".' },
+            { letter: 'F', type: 'Empieza por', question: 'Función del lenguaje que se utiliza para abrir, mantener, comprobar o cerrar el canal de comunicación.', answers: ['fatica', 'funcion fatica', 'de contacto'], explanation: 'Se centra en el CANAL físico. Frases como "¿Me oyes?" o "Ajá" solo verifican que la comunicación fluye correctamente.' },
+            { letter: 'G', type: 'Empieza por', question: 'Nombre o apellido del poeta renacentista español que consolidó el endecasílabo y los sonetos.', answers: ['garcilaso', 'garcilaso de la vega'], explanation: 'Introdujo en España la métrica italiana. Sus temas centrales son el amor idealizado, el locus amoenus y la mitología.' },
+            { letter: 'H', type: 'Empieza por', question: 'Figura literaria que consiste en alterar el orden lógico o gramatical de las palabras en una oración.', answers: ['hiperbaton'], explanation: 'Usado en el Barroco y Renacimiento para imitar la sintaxis del latín o cuadrar la rima. Ej: "Del salón en el ángulo oscuro".' },
+            { letter: 'I', type: 'Empieza por', question: 'Figura literaria que consiste en dar a entender lo contrario de lo que se dice expresamente.', answers: ['ironia'], explanation: 'Se dice lo opuesto a lo que se piensa, pero el contexto permite descodificarlo. Si es cruel y ofensiva, se llama Sarcasmo.' },
+            { letter: 'J', type: 'Empieza por', question: 'Breves composiciones líricas populares en lengua mozárabe, cantadas por mujeres.', answers: ['jarcha', 'jarchas'], explanation: 'Son los textos literarios más antiguos en lenguas romances ibéricas (s. XI). Lamentos amorosos al final de las moaxajas.' },
+            { letter: 'L', type: 'Empieza por', question: 'Nombre de pila del creador de la Comedia Nueva en el Barroco, apodado Fénix de los Ingenios.', answers: ['lope', 'lope de vega'], explanation: 'Lope de Vega rompió las reglas clásicas del teatro (acción, tiempo y lugar). Mezcló lo trágico y lo cómico.' },
+            { letter: 'M', type: 'Empieza por', question: 'Identificación de un término real con uno imaginario por su relación de semejanza.', answers: ['metafora'], explanation: 'Sustituye el Término Real (R) por el Imaginario (I). Ej: "Tus cabellos son oro" (oro sustituye al rubio).' },
+            { letter: 'N', type: 'Empieza por', question: 'Voz ficticia que cuenta la historia y organiza la trama en un texto literario.', answers: ['narrador'], explanation: 'No confundir al narrador (ficticio) con el autor (persona real). Puede ser interno (protagonista) o externo (omnisciente).' },
+            { letter: 'Ñ', type: 'Contiene la', question: 'Texto periodístico o académico, normalmente breve, que valora críticamente una obra o exposición.', answers: ['reseña'], explanation: 'Género híbrido (expositivo-argumentativo). Informa sobre la obra e incluye la valoración crítica del autor.' },
+            { letter: 'O', type: 'Empieza por', question: 'Figura retórica que combina dos palabras de significado opuesto que originan un nuevo sentido.', answers: ['oximoron'], explanation: 'Chocan dos conceptos incompatibles. Ejemplos clásicos: "música callada", "fuego helado" o "luz oscura".' },
+            { letter: 'P', type: 'Empieza por', question: 'Unión de dos o más verbos (auxiliar + enlace + principal) que funcionan como un solo núcleo.', answers: ['perifrasis', 'perifrasis verbal'], explanation: 'Aportan matices de aspecto o modo. "Tengo que estudiar" (obligación) es distinto a "estudio" (acción neutra).' },
+            { letter: 'Q', type: 'Empieza por', question: 'Apellido del principal autor del Conceptismo literario en el Barroco español.', answers: ['quevedo', 'francisco de quevedo'], explanation: 'Maestro del Conceptismo. Su estilo requería agudeza mental, dobles sentidos, polisemia y visión pesimista.' },
+            { letter: 'R', type: 'Empieza por', question: 'Movimiento literario del siglo XIX que exalta el "yo", la libertad y los sentimientos desbordados.', answers: ['romanticismo'], explanation: 'Rebelión contra la Razón ilustrada. Prima el subjetivismo, paisajes nocturnos, el amor trágico y el ansia de libertad.' },
+            { letter: 'S', type: 'Empieza por', question: 'Oración compuesta que carece de independencia sintáctica y depende de otra principal.', answers: ['subordinada', 'oracion subordinada'], explanation: 'Actúan como un sintagma incrustado. Pueden ser sustantivas (SN), adjetivas (S.Adj) o adverbiales (S.Adv).' },
+            { letter: 'T', type: 'Empieza por', question: 'Idea principal, opinión o postura que un autor defiende a lo largo de un texto argumentativo.', answers: ['tesis'], explanation: 'Columna vertebral del texto. Si aparece al principio, la estructura es deductiva; si es al final, es inductiva.' },
+            { letter: 'U', type: 'Contiene la', question: 'Función sintáctica que concuerda obligatoriamente en número y persona con el verbo.', answers: ['sujeto'], explanation: 'El truco infalible: cambia el número del verbo. La palabra que obligatoriamente cambie para que tenga sentido es el Sujeto.' },
+            { letter: 'V', type: 'Empieza por', question: 'Elemento gramatical extraoracional que sirve para llamar la atención del receptor.', answers: ['vocativo'], explanation: 'Va siempre separado por comas. Es apelativo. En "María, ven aquí", María es vocativo y el sujeto está omitido.' },
+            { letter: 'X', type: 'Contiene la', question: 'Parte de la gramática que estudia cómo se combinan las palabras para formar oraciones.', answers: ['sintaxis'], explanation: 'Estudia las funciones lógicas de la oración: Sujeto, CD, CI, Atributo, Predicativo, Régimen, etc.' },
+            { letter: 'Y', type: 'Contiene la', question: 'Poema narrativo extenso de tono grandilocuente que relata acciones heroicas de la Antigüedad.', answers: ['epopeya'], explanation: 'Épica de la Antigüedad Clásica. La Ilíada o la Odisea, caracterizadas por la intervención de los dioses.' },
+            { letter: 'Z', type: 'Contiene la', question: 'Accidente gramatical del verbo que indica si el sujeto realiza la acción o la recibe.', answers: ['voz'], explanation: 'Voz ACTIVA: el sujeto hace la acción. Voz PASIVA: el sujeto la sufre (sujeto paciente) usando ser + participio.' }
         ];
 
+        /* ==========================================================================
+           MOTOR DE AUDIO A PRUEBA DE FALLOS
+           ========================================================================== */
         const AudioFX = {
-            ctx: null, master: null, enabled: false,
+            ctx: null, enabled: false,
             init() {
                 try {
                     window.AudioContext = window.AudioContext || window.webkitAudioContext;
-                    if (!this.ctx) {
-                        this.ctx = new AudioContext();
-                        this.master = this.ctx.createGain();
-                        this.master.gain.value = 0.3;
-                        this.master.connect(this.ctx.destination);
-                    }
-                    if(this.ctx.state === 'suspended') {
-                        this.ctx.resume();
-                    }
+                    this.ctx = new AudioContext();
                     this.enabled = true;
                 } catch(e) { 
-                    console.log("Audio no soportado o bloqueado por el navegador.");
-                    this.enabled = false; 
+                    console.log("Audio no soportado"); 
                 }
             },
             play(freq, type, dur, vol=1) {
@@ -375,18 +291,16 @@
                     osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
                     gain.gain.setValueAtTime(vol, this.ctx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + dur);
-                    osc.connect(gain); gain.connect(this.master);
+                    osc.connect(gain); gain.connect(this.ctx.destination);
                     osc.start(); osc.stop(this.ctx.currentTime + dur);
-                } catch(e) {
-                    // Silenciar errores para no bloquear el juego
-                }
+                } catch(e) {}
             },
             tick() { this.play(800, 'square', 0.05, 0.1); },
             pass() { this.play(300, 'sine', 0.3, 0.4); setTimeout(()=>this.play(400, 'sine', 0.4, 0.4), 100); },
             correct() { 
-                this.play(523.25, 'triangle', 0.2, 0.5); // C5
-                setTimeout(()=>this.play(659.25, 'triangle', 0.2, 0.5), 100); // E5
-                setTimeout(()=>this.play(783.99, 'triangle', 0.4, 0.5), 200); // G5
+                this.play(523.25, 'triangle', 0.2, 0.5); 
+                setTimeout(()=>this.play(659.25, 'triangle', 0.2, 0.5), 100); 
+                setTimeout(()=>this.play(783.99, 'triangle', 0.4, 0.5), 200); 
             },
             wrong() { 
                 this.play(200, 'sawtooth', 0.4, 0.5); 
@@ -399,10 +313,14 @@
             }
         };
 
+        /* ==========================================================================
+           SISTEMA DE PARTÍCULAS CANVAS
+           ========================================================================== */
         const FX = {
-            canvas: null, ctx: null, particles: [], animId: null,
+            canvas: null, ctx: null, particles: [],
             init() {
                 this.canvas = document.getElementById('fx-canvas');
+                if(!this.canvas) return;
                 this.ctx = this.canvas.getContext('2d');
                 this.resize();
                 window.addEventListener('resize', () => this.resize());
@@ -412,109 +330,94 @@
             resize() { this.canvas.width = window.innerWidth; this.canvas.height = window.innerHeight; },
             createParticle() {
                 this.particles.push({
-                    x: Math.random() * this.canvas.width,
-                    y: Math.random() * this.canvas.height,
-                    r: Math.random() * 3 + 1,
-                    dx: (Math.random() - 0.5) * 0.5,
-                    dy: (Math.random() - 0.5) * 0.5,
-                    color: `hsla(${Math.random()*60 + 200}, 80%, 60%, ${Math.random()*0.5 + 0.1})` // Tonos azules/púrpuras
+                    x: Math.random() * this.canvas.width, y: Math.random() * this.canvas.height,
+                    r: Math.random() * 3 + 1, dx: (Math.random() - 0.5) * 0.5, dy: (Math.random() - 0.5) * 0.5,
+                    color: `hsla(${Math.random()*60 + 200}, 80%, 60%, ${Math.random()*0.5 + 0.1})`
                 });
             },
             loop() {
+                if(!this.ctx) return;
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                 this.particles.forEach(p => {
                     p.x += p.dx; p.y += p.dy;
                     if(p.x < 0 || p.x > this.canvas.width) p.dx *= -1;
                     if(p.y < 0 || p.y > this.canvas.height) p.dy *= -1;
-                    this.ctx.beginPath();
-                    this.ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                    this.ctx.fillStyle = p.color;
-                    this.ctx.fill();
+                    this.ctx.beginPath(); this.ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    this.ctx.fillStyle = p.color; this.ctx.fill();
                 });
-                this.animId = requestAnimationFrame(() => this.loop());
-            },
-            burstConfetti() {
-                for(let i=0; i<100; i++) {
-                    this.particles.push({
-                        x: this.canvas.width/2, y: this.canvas.height,
-                        r: Math.random() * 6 + 2,
-                        dx: (Math.random() - 0.5) * 15,
-                        dy: -(Math.random() * 15 + 5),
-                        color: `hsl(${Math.random()*360}, 100%, 50%)`
-                    });
-                }
+                requestAnimationFrame(() => this.loop());
             }
         };
 
+        /* ==========================================================================
+           MOTOR DEL JUEGO LÓGICO
+           ========================================================================== */
         const Game = {
             questions: [], currentQIndex: 0,
             teams: [
-                { name: 'Equipo 1', score: 0, color: 'blue', border: 'border-blue-500', text: 'text-blue-400' },
-                { name: 'Equipo 2', score: 0, color: 'red', border: 'border-red-500', text: 'text-red-400' },
-                { name: 'Equipo 3', score: 0, color: 'emerald', border: 'border-emerald-500', text: 'text-emerald-400' },
-                { name: 'Equipo 4', score: 0, color: 'amber', border: 'border-amber-500', text: 'text-amber-400' }
+                { name: 'Equipo 1', score: 0, colorClasses: 'border-blue-500 text-blue-400 bg-blue-900/30 shadow-[0_0_20px_#3b82f6]' },
+                { name: 'Equipo 2', score: 0, colorClasses: 'border-red-500 text-red-400 bg-red-900/30 shadow-[0_0_20px_#ef4444]' },
+                { name: 'Equipo 3', score: 0, colorClasses: 'border-emerald-500 text-emerald-400 bg-emerald-900/30 shadow-[0_0_20px_#10b981]' },
+                { name: 'Equipo 4', score: 0, colorClasses: 'border-amber-500 text-amber-400 bg-amber-900/30 shadow-[0_0_20px_#f59e0b]' }
             ],
-            currentTeam: 0,
-            time: 600, // 10 minutos reales de juego
-            timerInterval: null,
-            isActive: false,
-            modalOpen: false,
+            currentTeam: 0, time: 600, timerInterval: null, isActive: false, modalOpen: false,
 
             start() {
-                // Iniciar Audio SIEMPRE a partir de un click directo del usuario
-                AudioFX.init();
-                FX.init();
-                
-                this.questions = DATABASE.map(q => ({ ...q, status: 'pending' }));
-                this.currentQIndex = 0;
-                this.currentTeam = 0;
-                this.teams.forEach(t => t.score = 0);
-                this.time = 600;
-                this.modalOpen = false;
-                
-                document.getElementById('start-screen').style.display = 'none';
-                const gameScreen = document.getElementById('game-screen');
-                gameScreen.classList.remove('hidden');
-                gameScreen.classList.add('flex');
+                try {
+                    // Inicializar Sistemas
+                    AudioFX.init();
+                    FX.init();
+                    
+                    // Resetear variables
+                    this.questions = DATABASE.map(q => ({ ...q, status: 'pending' }));
+                    this.currentQIndex = 0;
+                    this.currentTeam = 0;
+                    this.teams.forEach(t => t.score = 0);
+                    this.time = 600;
+                    this.modalOpen = false;
+                    
+                    // Transición de pantalla
+                    document.getElementById('start-screen').style.display = 'none';
+                    const gameScreen = document.getElementById('game-screen');
+                    gameScreen.classList.remove('hidden');
+                    gameScreen.classList.add('flex');
 
-                this.renderRosco();
-                this.updateUI();
-                this.isActive = true;
-                
-                this.loadQuestion();
-                this.resumeTimer();
-                
-                // Pequeño delay para asegurar que el DOM está listo antes de hacer focus
-                setTimeout(() => {
-                    const input = document.getElementById('answer-input');
-                    if(input) input.focus();
-                }, 150);
+                    // Secuencia de dibujado
+                    this.renderRosco();
+                    this.updateUI();
+                    
+                    this.isActive = true;
+                    this.loadQuestion();
+                    this.resumeTimer();
+                } catch(e) {
+                    console.error("Error al iniciar el juego:", e);
+                }
             },
 
+            // Dibuja el rosco SIN TOCAR el reloj
             renderRosco() {
-                const container = document.getElementById('rosco-circle');
-                // Limpiar letras anteriores sin destruir el temporizador central
-                container.querySelectorAll('.letter').forEach(el => el.remove());
+                const container = document.getElementById('rosco-letters');
+                container.innerHTML = ''; // Seguro porque solo contiene letras ahora
                 
                 const num = this.questions.length;
                 const isMobile = window.innerWidth < 768;
-                const radius = isMobile ? 150 : 200; 
-                const center = isMobile ? 170 : 225;
+                const radius = isMobile ? 140 : 180; 
 
                 this.questions.forEach((q, i) => {
                     const angle = -Math.PI / 2 + (i * 2 * Math.PI / num);
                     const el = document.createElement('div');
                     el.className = `letter status-pending`;
                     el.id = `letter-${i}`;
-                    el.style.left = `${center + radius * Math.cos(angle)}px`;
-                    el.style.top = `${center + radius * Math.sin(angle)}px`;
+                    // Posicionamiento central absoluto
+                    el.style.left = `calc(50% + ${radius * Math.cos(angle)}px)`;
+                    el.style.top = `calc(50% + ${radius * Math.sin(angle)}px)`;
                     el.innerText = q.letter;
                     container.appendChild(el);
                 });
             },
 
             updateUI() {
-                // Reloj protegido contra fallos
+                // Actualizar Reloj
                 const timerEl = document.getElementById('timer');
                 if (timerEl) timerEl.innerText = this.time;
                 
@@ -526,51 +429,65 @@
                     AudioFX.tick();
                 }
 
-                // Equipos
+                // Actualizar Tarjetas de Equipos
                 this.teams.forEach((t, i) => {
-                    document.getElementById(`score-${i}`).innerText = t.score;
+                    const scoreEl = document.getElementById(`score-${i}`);
+                    if(scoreEl) scoreEl.innerText = t.score;
+                    
                     const card = document.getElementById(`team-${i}`);
-                    if(i === this.currentTeam) {
-                        card.className = `glass-panel flex flex-col items-center rounded-2xl p-4 border-2 transition-all duration-300 transform scale-110 ${t.border} shadow-[0_0_20px_var(--neon-${t.color})] bg-${t.color}-900/30 z-10`;
-                    } else {
-                        card.className = `glass-panel flex flex-col items-center rounded-2xl p-4 border-2 border-slate-700/50 transition-all duration-300 opacity-60 scale-95`;
+                    if(card) {
+                        card.className = 'glass-panel flex flex-col items-center rounded-2xl p-4 border-2 transition-all duration-300';
+                        if(i === this.currentTeam) {
+                            card.classList.add('transform', 'scale-110', 'z-10', ...t.colorClasses.split(' '));
+                        } else {
+                            card.classList.add('border-slate-700/50', 'opacity-60', 'scale-95');
+                        }
                     }
                 });
 
-                // Indicador Turno Central
+                // Indicador Turno
                 const ind = document.getElementById('current-team-indicator');
                 const t = this.teams[this.currentTeam];
-                ind.className = `inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest border shadow-lg transition-all ${t.text} ${t.border} bg-${t.color}-900/30`;
-                document.getElementById('team-name-display').innerText = `Turno: ${t.name}`;
+                if(ind) {
+                    ind.className = `inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase border shadow-lg transition-all ${t.colorClasses}`;
+                }
+                const nameDisplay = document.getElementById('team-name-display');
+                if(nameDisplay) nameDisplay.innerText = `Turno: ${t.name}`;
             },
 
             loadQuestion() {
                 if(!this.isActive) return;
                 
-                // Actualizar letras
+                // Pintar letras
                 this.questions.forEach((q, i) => {
                     const el = document.getElementById(`letter-${i}`);
-                    el.className = `letter status-${q.status} ${i === this.currentQIndex ? 'status-active' : ''}`;
+                    if(el) {
+                        el.className = `letter status-${q.status} ${i === this.currentQIndex ? 'status-active' : ''}`;
+                    }
                 });
 
+                // Cargar textos
                 const q = this.questions[this.currentQIndex];
                 document.getElementById('question-letter').innerText = q.letter;
                 document.getElementById('question-type').innerText = q.type;
                 document.getElementById('question-text').innerText = q.question;
                 
                 const input = document.getElementById('answer-input');
-                input.value = '';
-                input.focus();
+                if(input) {
+                    input.value = '';
+                    setTimeout(() => input.focus(), 50); // Delay mínimo para asegurar el foco
+                }
             },
 
             checkAnswer() {
                 if (!this.isActive || this.modalOpen) return;
-                const input = document.getElementById('answer-input').value.trim();
-                if(!input) return;
+                const input = document.getElementById('answer-input');
+                const val = input.value.trim();
+                if(!val) return;
 
-                this.pauseTimer(); // Pausamos el tiempo para la explicación
+                this.pauseTimer(); // Parar reloj para explicar
                 
-                const normalizedInput = input.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+                const normalizedInput = val.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
                 const q = this.questions[this.currentQIndex];
                 const isCorrect = q.answers.some(a => a.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() === normalizedInput);
 
@@ -603,32 +520,23 @@
                 const modal = document.getElementById('explanation-modal');
                 const panel = document.getElementById('modal-panel');
                 
-                // Configurar Cabecera según acierto/fallo
                 const header = document.getElementById('modal-header');
                 const title = document.getElementById('modal-title');
-                const icon = document.getElementById('modal-icon');
                 
                 if(isCorrect) {
                     header.className = "p-6 text-center border-b border-emerald-500/30 bg-emerald-900/20";
                     title.innerText = "¡Respuesta Correcta!";
-                    title.className = "text-3xl font-black uppercase tracking-widest text-emerald-400 mb-2 drop-shadow-[0_0_10px_rgba(16,185,129,0.5)]";
-                    icon.className = "w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center border-4 border-emerald-500 text-emerald-400 bg-emerald-900/50 shadow-[0_0_20px_rgba(16,185,129,0.4)]";
-                    icon.innerHTML = `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>`;
+                    title.className = "text-3xl font-black uppercase text-emerald-400 mb-2 drop-shadow-[0_0_10px_rgba(16,185,129,0.5)]";
                 } else {
                     header.className = "p-6 text-center border-b border-red-500/30 bg-red-900/20";
                     title.innerText = "¡Respuesta Incorrecta!";
-                    title.className = "text-3xl font-black uppercase tracking-widest text-red-400 mb-2 drop-shadow-[0_0_10px_rgba(239,68,68,0.5)]";
-                    icon.className = "w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center border-4 border-red-500 text-red-400 bg-red-900/50 shadow-[0_0_20px_rgba(239,68,68,0.4)]";
-                    icon.innerHTML = `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg>`;
+                    title.className = "text-3xl font-black uppercase text-red-400 mb-2 drop-shadow-[0_0_10px_rgba(239,68,68,0.5)]";
                 }
 
-                // Inyectar datos pedagógicos
                 document.getElementById('modal-answer').innerText = questionObj.answers[0].toUpperCase();
                 document.getElementById('modal-explanation').innerHTML = questionObj.explanation;
 
-                // Mostrar Modal con animación
                 modal.classList.remove('hidden');
-                // Pequeño delay para que la transición CSS se aplique tras remover 'hidden'
                 setTimeout(() => {
                     modal.classList.remove('opacity-0');
                     panel.classList.remove('scale-95');
@@ -647,16 +555,15 @@
                     modal.classList.add('hidden');
                     this.modalOpen = false;
                     
-                    // Si falló, pasa el turno. Si acertó, lo mantiene.
-                    const q = this.questions[this.currentQIndex];
-                    if(q.status === 'incorrect') {
+                    // Cambio de turno si ha fallado
+                    if(this.questions[this.currentQIndex].status === 'incorrect') {
                         this.currentTeam = (this.currentTeam + 1) % this.teams.length;
                         this.updateUI();
                     }
                     
                     this.resumeTimer();
                     this.advanceQuestion();
-                }, 300); // Esperar a la transición CSS
+                }, 300);
             },
 
             advanceQuestion() {
@@ -697,7 +604,6 @@
                 this.isActive = false;
                 this.pauseTimer();
                 AudioFX.win();
-                FX.burstConfetti();
 
                 document.getElementById('game-screen').classList.add('hidden');
                 document.getElementById('game-screen').classList.remove('flex');
@@ -709,12 +615,9 @@
                 const sorted = [...this.teams].sort((a,b) => b.score - a.score);
                 
                 const podiumHTML = sorted.map((t, i) => `
-                    <div class="glass-panel p-5 rounded-2xl border-l-4 ${t.border} flex justify-between items-center ${i===0 ? 'scale-105 shadow-[0_0_30px_rgba(255,255,255,0.2)] bg-slate-800/80' : 'bg-slate-900/50'}">
-                        <div class="flex items-center gap-4">
-                            <span class="text-3xl font-black ${i===0 ? 'text-yellow-400' : 'text-slate-500'}">#${i+1}</span>
-                            <span class="text-xl font-bold ${t.text}">${t.name}</span>
-                        </div>
-                        <span class="text-4xl font-black text-white">${t.score}</span>
+                    <div class="glass-panel p-5 rounded-2xl border-l-4 border-current ${t.colorClasses} flex justify-between items-center ${i===0 ? 'scale-105 shadow-xl' : 'opacity-80 scale-95'}">
+                        <span class="text-xl font-bold">${i+1}º - ${t.name}</span>
+                        <span class="text-4xl font-black text-white">${t.score} pts</span>
                     </div>
                 `).join('');
 
@@ -722,40 +625,41 @@
                 
                 const msg = document.getElementById('end-message');
                 if(sorted[0].score === sorted[1]?.score) {
-                    msg.innerHTML = "¡Increíble! El torneo ha finalizado en un <strong class='text-amber-400'>EMPATE TÉCNICO</strong>.";
+                    msg.innerHTML = "¡EMPATE TÉCNICO en cabeza!";
                 } else {
-                    msg.innerHTML = `¡Gloria y honor literario para el <strong class='${sorted[0].text} text-3xl uppercase'>${sorted[0].name}</strong>!`;
+                    msg.innerHTML = `¡Gloria y honor para el ${sorted[0].name}!`;
                 }
             }
         };
 
-        // Escuchadores Globales de Teclado
+        // EXPOSICIÓN GLOBAL ESTRICTA
+        window.Game = Game;
+
+        // ATADJOS DE TECLADO (Optimizados y Seguros)
         document.addEventListener('keydown', (e) => {
             if(!Game.isActive) return;
 
-            // Manejo cuando el Modal de Explicación está ABIERTO
             if(Game.modalOpen) {
                 if(e.key === 'Enter') {
                     e.preventDefault();
                     Game.closeExplanation();
                 }
-                return; // Bloquear otras teclas mientras el modal está abierto
+                return; 
             }
 
-            // Manejo cuando el Modal está CERRADO (Jugando)
+            const input = document.getElementById('answer-input');
+
             if(e.key === 'Enter') {
                 e.preventDefault();
                 Game.checkAnswer();
             } else if (e.code === 'Space') {
-                const input = document.getElementById('answer-input');
-                // Solo pasapalabra con espacio si el input está vacío y estamos enfocados o no
-                if(document.activeElement !== input || input.value.trim() === '') {
-                    e.preventDefault(); // Evita que la pantalla baje o se escriba un espacio
+                // Pasapalabra con espacio SOLO si el input está vacío
+                if(input && input.value.trim() === '') {
+                    e.preventDefault(); 
                     Game.pasapalabra();
                 }
             }
         });
-
     </script>
 </body>
 </html>
