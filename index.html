@@ -493,8 +493,8 @@
 
             renderRosco() {
                 const container = document.getElementById('rosco-circle');
-                // Limpiar letras anteriores (mantener el timer central)
-                Array.from(container.children).forEach(c => { if(c.id !== 'timer-container') c.remove(); });
+                // Limpiar letras anteriores sin destruir el temporizador central
+                container.querySelectorAll('.letter').forEach(el => el.remove());
                 
                 const num = this.questions.length;
                 const isMobile = window.innerWidth < 768;
@@ -514,13 +514,15 @@
             },
 
             updateUI() {
-                // Reloj
-                document.getElementById('timer').innerText = this.time;
+                // Reloj protegido contra fallos
+                const timerEl = document.getElementById('timer');
+                if (timerEl) timerEl.innerText = this.time;
+                
                 const timerContainer = document.getElementById('timer-container');
-                if(this.time <= 15) {
+                if(this.time <= 15 && timerContainer && timerEl) {
                     timerContainer.classList.add('border-red-500', 'shadow-[0_0_40px_rgba(239,68,68,0.6)]');
                     timerContainer.classList.remove('border-blue-500/50');
-                    document.getElementById('timer').classList.add('text-red-400', 'animate-pulse');
+                    timerEl.classList.add('text-red-400', 'animate-pulse');
                     AudioFX.tick();
                 }
 
