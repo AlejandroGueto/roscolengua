@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rosco Repaso | Lengua y Literatura 1º Bachillerato</title>
+    <!-- Tailwind CSS para los estilos rápidos -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
     
@@ -131,7 +132,7 @@
                 <h3 class="text-blue-400 font-bold mb-3 uppercase tracking-wider text-sm">Reglas del Torneo</h3>
                 <ul class="space-y-3 text-sm md:text-base">
                     <li><strong class="text-blue-500">▹</strong> Se juega por equipos. El turno salta al fallar o pasar.</li>
-                    <li><strong class="text-blue-500">▹</strong> Las respuestas incluyen explicaciones largas y ejemplos aclaratorios al finalizar el turno.</li>
+                    <li><strong class="text-blue-500">▹</strong> Las preguntas se generan aleatoriamente en cada nueva partida.</li>
                     <li><strong class="text-blue-500">▹</strong> El tiempo total es de <strong class="text-emerald-400">10 minutos</strong>.</li>
                     <li><strong class="text-blue-500">▹</strong> Usa el botón de <strong class="text-purple-400">Pista</strong> si te quedas atascado.</li>
                     <li><strong class="text-blue-500">▹</strong> Usa <strong>[Enter]</strong> para comprobar y <strong>[Espacio]</strong> (con el cajón vacío) para pasar.</li>
@@ -255,162 +256,112 @@
     </div>
 
     <script>
-        // BASE DE DATOS EXTENDIDA (Con Pistas y Explicaciones + Ejemplos)
-        const DATABASE = [
-            { 
-                letter: 'A', type: 'Empieza por', question: 'Tipo de texto en el que se defiende una idea o tesis aportando razones o argumentos.', 
-                answers: ['argumentacion', 'argumentativo', 'texto argumentativo'], 
-                hint: 'Se usa mucho en los artículos de opinión o en debates.',
-                explanation: 'La <strong>argumentación</strong> busca persuadir al receptor sobre una tesis concreta mediante argumentos racionales, datos objetivos o apelaciones emocionales.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> Un ensayo que defiende la reducción del uso de plásticos de un solo uso. Para convencer al lector, el autor aporta datos científicos sobre la contaminación marina (argumentos objetivos) y hace un llamamiento sobre el mundo que dejaremos a nuestros hijos (argumentos afectivos).' 
-            },
-            { 
-                letter: 'B', type: 'Empieza por', question: 'Movimiento literario del siglo XVII caracterizado por el pesimismo, la complejidad, el conceptismo y el culteranismo.', 
-                answers: ['barroco'], 
-                hint: 'Época del Siglo de Oro en la que destacaron Quevedo, Góngora y Lope de Vega.',
-                explanation: 'El <strong>Barroco</strong> refleja una época de profunda crisis económica, política y social en España. La literatura abandona el optimismo renacentista para volverse compleja, recargada y pesimista.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> Existen dos grandes corrientes. Por un lado, el <em>Culteranismo</em> de Luis de Góngora, lleno de metáforas oscuras y vocabulario culto (ej. "Fábula de Polifemo y Galatea"). Por otro, el <em>Conceptismo</em> de Francisco de Quevedo, que juega con el ingenio, el doble sentido y la ironía (ej. su famoso soneto satírico "Érase un hombre a una nariz pegado").' 
-            },
-            { 
-                letter: 'C', type: 'Empieza por', question: 'Oración compuesta formada por proposiciones sintácticamente independientes unidas por un nexo.', 
-                answers: ['coordinada', 'oracion coordinada'], 
-                hint: 'Suelen ir unidas por conjunciones como "y", "o", "pero".',
-                explanation: 'Las oraciones <strong>coordinadas</strong> están exactamente al mismo nivel sintáctico; ninguna es principal ni subordinada de la otra. Si las separas, ambas mantienen su sentido completo y su estructura.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> "María estudia Lengua (1) <strong>y</strong> Juan lee un libro (2)". Si quitamos el nexo "y", las dos oraciones ("María estudia Lengua" / "Juan lee un libro") funcionan perfectamente por sí solas. Pueden ser copulativas, disyuntivas, adversativas, etc.' 
-            },
-            { 
-                letter: 'D', type: 'Empieza por', question: 'Modalidad textual que explica detalladamente cómo son las personas, los lugares o los objetos.', 
-                answers: ['descripcion', 'descriptivo', 'texto descriptivo'], 
-                hint: 'Se suele definir como "pintar con palabras".',
-                explanation: 'La <strong>descripción</strong> detalla las características de un sustantivo, paralizando la acción del relato. Destacan en ella los adjetivos calificativos, los verbos copulativos y las figuras retóricas.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> "El salón era inmenso y melancólico, con altos ventanales góticos que filtraban una luz mortecina sobre los polvorientos muebles de roble". En este fragmento, no ocurre ninguna acción, simplemente el narrador nos "pinta" la escena.' 
-            },
-            { 
-                letter: 'E', type: 'Empieza por', question: 'Género literario narrativo, tradicionalmente en verso, en el que se relatan hazañas de héroes.', 
-                answers: ['epica', 'poesia epica', 'genero epico'], 
-                hint: 'El "Cantar de mio Cid" pertenece a este gran género.',
-                explanation: 'La <strong>épica</strong> (o poesía épica) canta las hazañas bélicas de un héroe que representa los valores fundamentales de su comunidad. En la Edad Media se manifestaba a través de los cantares de gesta recitados por los juglares.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> El <em>Cantar de mio Cid</em>. Relata cómo Rodrigo Díaz de Vivar, tras ser desterrado injustamente, logra recuperar su honra mediante heroicas victorias militares contra los musulmanes y consigue el perdón del rey Alfonso VI.' 
-            },
-            { 
-                letter: 'F', type: 'Empieza por', question: 'Función del lenguaje que se utiliza para abrir, mantener, comprobar o cerrar el canal de comunicación.', 
-                answers: ['fatica', 'funcion fatica', 'de contacto'], 
-                hint: 'La usamos todo el tiempo por teléfono cuando decimos "¿Me oyes?".',
-                explanation: 'La función <strong>fática</strong> o de contacto (según Roman Jakobson) se centra exclusivamente en el CANAL físico. No busca transmitir información relevante, sino confirmar que la conexión entre emisor y receptor sigue abierta y funciona correctamente.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> Cuando contestamos al teléfono diciendo "Dígame" o "¿Sí?", cuando empezamos una charla de ascensor con un "¡Qué frío hace hoy!", o cuando en medio de una conversación asentimos con un "Ajá", "claro", "te entiendo".' 
-            },
-            { 
-                letter: 'G', type: 'Empieza por', question: 'Nombre o apellido del poeta renacentista español que consolidó el endecasílabo y los sonetos.', 
-                answers: ['garcilaso', 'garcilaso de la vega'], 
-                hint: 'Escribió las famosas Églogas protagonizadas por Salicio y Nemoroso.',
-                explanation: '<strong>Garcilaso de la Vega</strong> introdujo y consolidó en España la métrica y las formas italianas (el endecasílabo, el soneto, la lira), bajo la influencia de Petrarca. Representa el ideal renacentista del hombre de armas y letras.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> Su celebérrimo <em>Soneto XXIII</em> ("En tanto que de rosa y de azucena..."). En él desarrolla magistralmente el tópico latino del <em>Carpe diem</em> (aprovecha el momento), animando a una joven a disfrutar de su belleza antes de que llegue la vejez ("antes que el tiempo airado / cubra de nieve la hermosa cumbre").' 
-            },
-            { 
-                letter: 'H', type: 'Empieza por', question: 'Figura literaria que consiste en alterar el orden lógico o gramatical de las palabras en una oración.', 
-                answers: ['hiperbaton'], 
-                hint: 'El orden lógico de la frase se invierte (como habla Yoda de Star Wars).',
-                explanation: 'El <strong>hipérbaton</strong> consiste en alterar la sintaxis habitual del idioma (Sujeto + Verbo + Complementos) para destacar ciertas palabras, imitar la estructura del latín o, en poesía, cuadrar la métrica y la rima.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> Gustavo Adolfo Bécquer escribió: "Volverán las oscuras golondrinas / en tu balcón sus nidos a colgar". El orden lógico y prosáico habría sido: "Las oscuras golondrinas volverán a colgar sus nidos en tu balcón".' 
-            },
-            { 
-                letter: 'I', type: 'Empieza por', question: 'Figura literaria que consiste en dar a entender lo contrario de lo que se dice expresamente.', 
-                answers: ['ironia'], 
-                hint: 'La usamos a diario con tono de sarcasmo.',
-                explanation: 'La <strong>ironía</strong> es un recurso mediante el cual se dice lo opuesto a lo que realmente se piensa, pero el contexto, el tono o la situación permiten al receptor descodificar el verdadero mensaje. Cuando la ironía es cruel y busca herir de forma directa, se denomina <em>sarcasmo</em>.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> Si está cayendo una tormenta torrencial y alguien dice: "¡Menudo día de playa fantástico se ha quedado!". O cuando un profesor le dice a un alumno que llega una hora tarde: "No corras, que todavía no hemos abierto".' 
-            },
-            { 
-                letter: 'J', type: 'Empieza por', question: 'Breves composiciones líricas populares en lengua mozárabe, cantadas por mujeres.', 
-                answers: ['jarcha', 'jarchas'], 
-                hint: 'Son los textos literarios más antiguos que conservamos en la Península Ibérica.',
-                explanation: 'Las <strong>jarchas</strong> (siglo XI) son cancioncillas populares escritas en lengua mozárabe (el romance que hablaban los cristianos en territorio musulmán). Los poetas cultos árabes o hebreos las incorporaban como estrofa final de sus poemas largos, llamados moaxajas.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> Casi siempre ponen voz a una joven enamorada que se lamenta ante su madre o hermanas por la ausencia de su amado (habib). Por ejemplo: "¡Tanto amar, tanto amar, amado, tanto amar! / Enfermaron unos ojos antes sanos y ahora duelen mucho".' 
-            },
-            { 
-                letter: 'L', type: 'Empieza por', question: 'Nombre de pila del creador de la Comedia Nueva en el Barroco, apodado Fénix de los Ingenios.', 
-                answers: ['lope', 'lope de vega'], 
-                hint: 'Autor de "Fuenteovejuna" y "El perro del hortelano".',
-                explanation: '<strong>Lope de Vega</strong> revolucionó el teatro en España con su "Arte nuevo de hacer comedias". Rompió la estricta regla clásica de las tres unidades (acción, tiempo y lugar), redujo los actos a tres, y mezcló con éxito elementos trágicos y cómicos en la misma obra.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> En su obra maestra <em>Fuenteovejuna</em>, mezcla un hecho histórico real sobre los Reyes Católicos (trama seria) con la historia de un pueblo entero que, unido ("Fuenteovejuna, todos a una"), se rebela y asesina al Comendador por sus múltiples abusos, introduciendo también la figura del "gracioso".' 
-            },
-            { 
-                letter: 'M', type: 'Empieza por', question: 'Identificación de un término real con uno imaginario por su relación de semejanza.', 
-                answers: ['metafora'], 
-                hint: 'Consiste en decir que una cosa "es" otra. Ej: Tus ojos son dos luceros.',
-                explanation: 'La <strong>metáfora</strong> sustituye un Término Real (R) por un Término Imaginario (I) basándose en una similitud objetiva o subjetiva. Si aparecen ambos términos juntos unidos por "como" o "parece", es un símil o comparación.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> Metáfora impura (aparecen los dos): "Tus dientes (R) son perlas (I)". Metáfora pura (el término real desaparece): "Las perlas de tu boca". En este caso, el lector debe deducir que "perlas" sustituye a "dientes" por su semejanza en color y brillo.' 
-            },
-            { 
-                letter: 'N', type: 'Empieza por', question: 'Voz ficticia que cuenta la historia y organiza la trama en un texto literario.', 
-                answers: ['narrador'], 
-                hint: 'No debes confundirlo nunca con el autor material de la obra.',
-                explanation: 'El <strong>narrador</strong> es un ente ficticio creado por el autor para contar la historia. Puede estar dentro de la historia (interno / protagonista en 1ª persona) o fuera de ella (externo / omnisciente u observador en 3ª persona).<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> Miguel de Cervantes (autor histórico real) crea en el <em>Quijote</em> una compleja red de narradores. El narrador principal afirma que él no inventó la historia, sino que simplemente está traduciendo los manuscritos encontrados de un historiador árabe llamado Cide Hamete Benengeli.' 
-            },
-            { 
-                letter: 'Ñ', type: 'Contiene la', question: 'Texto periodístico o académico, normalmente breve, que valora críticamente una obra o exposición.', 
-                answers: ['reseña'], 
-                hint: 'La buscas antes de ir a ver una película al cine o comprarte un libro.',
-                explanation: 'La <strong>reseña</strong> es un género textual híbrido (expositivo-argumentativo). Su objetivo es doble: informar sobre el contenido de una novedad cultural (libro, película, obra de teatro, exposición) y ofrecer una valoración crítica fundamentada para guiar al público.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> Un texto publicado en una revista donde un crítico literario resume brevemente el argumento de una novela recién publicada, para luego dedicar los últimos párrafos a alabar su ritmo narrativo pero criticar que sus personajes son algo planos (esa sería su tesis crítica).' 
-            },
-            { 
-                letter: 'O', type: 'Empieza por', question: 'Figura retórica que combina dos palabras de significado opuesto que originan un nuevo sentido.', 
-                answers: ['oximoron'], 
-                hint: 'Ejemplo clásico: "Un silencio atronador".',
-                explanation: 'El <strong>oxímoron</strong> es un recurso lógico que choca dos conceptos semánticamente incompatibles en un mismo sintagma, generando un significado poético totalmente nuevo y paradójico.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> Expresiones como "música callada", "fuego helado", "luz oscura" o "muerto viviente". San Juan de la Cruz utiliza "la música callada / la soledad sonora" para intentar describir la inefable e inexplicable experiencia mística de la unión del alma con Dios.' 
-            },
-            { 
-                letter: 'P', type: 'Empieza por', question: 'Unión de dos o más verbos (auxiliar + enlace + principal) que funcionan como un solo núcleo.', 
-                answers: ['perifrasis', 'perifrasis verbal'], 
-                hint: 'Ejemplos: "Tengo que ir", "Sigue lloviendo", "Voy a salir".',
-                explanation: 'Las <strong>perífrasis verbales</strong> son agrupaciones de verbos en las que uno está conjugado (aporta la persona, tiempo y modo, pero pierde su significado) y otro está en forma no personal (infinitivo, gerundio o participio, que aporta el significado real). Actúan como un único verbo en el análisis sintáctico.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> En la frase "Me <strong>eché a reír</strong>", no significa que la persona se haya tumbado ("echar"), sino que la perífrasis ingresiva indica el comienzo súbito de una acción (empezó a reír). Todo el bloque "eché a reír" es el Núcleo Verbal.' 
-            },
-            { 
-                letter: 'Q', type: 'Empieza por', question: 'Apellido del principal autor del Conceptismo literario en el Barroco español.', 
-                answers: ['quevedo', 'francisco de quevedo'], 
-                hint: 'Escribió la novela picaresca "El Buscón" y fue un feroz enemigo de Góngora.',
-                explanation: 'Francisco de <strong>Quevedo</strong> es el gran maestro del Conceptismo, una corriente que prioriza la condensación de significados, la agudeza intelectual y los juegos de palabras ingeniosos sobre la belleza formal (a diferencia de Góngora).<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> En su famoso soneto burlesco contra Góngora ("Érase un hombre a una nariz pegado"), utiliza metáforas grotescas e hipérboles exageradas para ridiculizar a su rival: "Érase un reloj de sol mal encarado / érase un elefante boca arriba".' 
-            },
-            { 
-                letter: 'R', type: 'Empieza por', question: 'Movimiento literario del siglo XIX que exalta el "yo", la libertad y los sentimientos desbordados.', 
-                answers: ['romanticismo'], 
-                hint: 'Corriente de autores como Bécquer, Rosalía de Castro y Espronceda.',
-                explanation: 'El <strong>Romanticismo</strong> es una rebeldía frente a las estrictas reglas de la Ilustración y la Razón pura. Prima el subjetivismo, la imaginación, la ambientación en lugares oscuros o medievales, el amor trágico inalcanzable y, por encima de todo, la libertad creadora e individual.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> "La canción del pirata" de José de Espronceda. El protagonista es un pirata (un marginado social, un rebelde), que canta a su total libertad fuera de las leyes de los reyes y las naciones: "Que es mi barco mi tesoro / que es mi dios la libertad".' 
-            },
-            { 
-                letter: 'S', type: 'Empieza por', question: 'Oración compuesta que carece de independencia sintáctica y depende de otra principal.', 
-                answers: ['subordinada', 'oracion subordinada'], 
-                hint: 'A diferencia de las coordinadas, esta depende de la oración principal para tener sentido.',
-                explanation: 'La oración <strong>subordinada</strong> funciona como un bloque sintáctico (Sintagma Nominal, Adjetival o Adverbial) incrustado dentro de la estructura de otra oración principal, realizando funciones como CD, Sujeto, Atributo o CC.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> "Juan confirmó <strong>que vendría a la fiesta</strong>". La parte en negrita es la subordinada sustantiva. No tiene sentido pleno por sí sola y funciona íntegramente como el Complemento Directo del verbo "confirmó" ("Juan <em>lo</em> confirmó").' 
-            },
-            { 
-                letter: 'T', type: 'Empieza por', question: 'Idea principal, opinión o postura que un autor defiende a lo largo de un texto argumentativo.', 
-                answers: ['tesis'], 
-                hint: 'Es lo que tienes que subrayar para saber qué piensa el autor de un artículo.',
-                explanation: 'La <strong>tesis</strong> es la columna vertebral de un texto argumentativo; es la idea, teoría u opinión exacta que el emisor intenta demostrar, refutar o sobre la cual quiere persuadir al receptor mediante argumentos.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> En un artículo periodístico sobre tecnología, la tesis podría ser la siguiente afirmación: "El uso incontrolado de pantallas en edades tempranas reduce drásticamente la capacidad de concentración en la escuela". Todo el texto estará al servicio de demostrar esta postura.' 
-            },
-            { 
-                letter: 'U', type: 'Contiene la', question: 'Función sintáctica que concuerda obligatoriamente en número y persona con el verbo.', 
-                answers: ['sujeto'], 
-                hint: 'La prueba de fuego para encontrarlo es cambiar el número del verbo.',
-                explanation: 'El <strong>sujeto</strong> es el sintagma nominal cuyo núcleo concuerda obligatoriamente con las desinencias del verbo en número (singular/plural) y persona. Es un error común intentar buscarlo preguntando "quién" al verbo; lo correcto es hacer la prueba de concordancia.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> "Me gustan <strong>las manzanas verdes</strong>". Si cambiamos el verbo a singular ("Me gusta"), la frase se vuelve agramatical ("*Me gusta las manzanas verdes"). Para que recupere el sentido estamos obligados a cambiar "la manzana verde". Por tanto, "las manzanas verdes" es el Sujeto, y no el Complemento Directo.' 
-            },
-            { 
-                letter: 'V', type: 'Empieza por', question: 'Elemento gramatical extraoracional que sirve para llamar la atención del receptor.', 
-                answers: ['vocativo'], 
-                hint: 'Va separado por comas en oraciones como "Pepe, ven aquí".',
-                explanation: 'El <strong>vocativo</strong> es una palabra o sintagma (generalmente un sustantivo) que sirve de llamada de atención o apelación al oyente. Sintácticamente, es un elemento marginal: queda fuera de la estructura principal de la oración y siempre se escribe aislado por comas.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> "<strong>Mamá</strong>, ¿dónde están las llaves?". En esta frase, "Mamá" es el vocativo. El sujeto no es "mamá", el sujeto real es "las llaves" (concuerda con el verbo "están").' 
-            },
-            { 
-                letter: 'X', type: 'Contiene la', question: 'Parte de la gramática que estudia cómo se combinan las palabras para formar oraciones.', 
-                answers: ['sintaxis'], 
-                hint: 'Es la disciplina que busca el Sujeto, CD, CI, Complemento de Régimen...',
-                explanation: 'La <strong>sintaxis</strong> es la subdisciplina de la lingüística que analiza las relaciones estructurales entre las palabras y el modo en que se agrupan en sintagmas para desempeñar funciones lógicas dentro de la oración.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> A nivel morfológico, en "El coche es rápido", "coche" es un sustantivo común masculino. Pero el análisis sintáctico no se queda ahí; determina que el bloque "El coche" funciona como Sujeto expreso, y "rápido" funciona como Atributo del verbo copulativo "es".' 
-            },
-            { 
-                letter: 'Y', type: 'Contiene la', question: 'Poema narrativo extenso de tono grandilocuente que relata acciones heroicas de la Antigüedad.', 
-                answers: ['epopeya'], 
-                hint: 'La Ilíada y La Odisea de Homero lo son.',
-                explanation: 'La <strong>epopeya</strong> es el gran subgénero clásico de la poesía épica de la Antigüedad. Son obras monumentales fundacionales para una cultura, caracterizadas por el tono elevado, la intervención de los dioses en el destino de los mortales, y los viajes o guerras legendarias.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> <em>La Odisea</em> de Homero. En ella no solo se narran aventuras mortales, sino que relata cómo los mismísimos dioses del Olimpo (Atenea, Poseidón) interfieren constantemente a favor o en contra del héroe Odiseo (Ulises) en su viaje de regreso a Ítaca.' 
-            },
-            { 
-                letter: 'Z', type: 'Contiene la', question: 'Accidente gramatical del verbo que indica si el sujeto realiza la acción o la recibe.', 
-                answers: ['voz'], 
-                hint: 'Puede ser "Activa" o "Pasiva".',
-                explanation: 'La <strong>voz</strong> verbal señala el papel del sujeto respecto al verbo. En la voz activa, el sujeto gramatical realiza la acción (sujeto agente). En la voz pasiva, el sujeto recibe o sufre la acción (sujeto paciente), y el que realiza la acción se denomina Complemento Agente.<br><br><span class="text-blue-300">💡 <strong>Ejemplo práctico:</strong></span> Voz activa: "La policía (sujeto agente) detuvo <strong>al ladrón</strong> (CD)". Voz pasiva: "<strong>El ladrón</strong> (sujeto paciente) fue detenido por la policía (C. Agente)". La pasiva se construye con el verbo ser + participio.' 
-            }
-        ];
+        // BANCO DE PREGUNTAS DINÁMICO (2 opciones por letra)
+        const QUESTION_POOL = {
+            'A': [
+                { type: 'Empieza por', question: 'Tipo de texto en el que se defiende una idea o tesis aportando razones o argumentos.', answers: ['argumentacion', 'argumentativo', 'texto argumentativo'], hint: 'Se usa mucho en los artículos de opinión o en debates.', explanation: 'La <strong>argumentación</strong> busca persuadir al receptor sobre una tesis concreta mediante argumentos racionales, datos objetivos o apelaciones emocionales.<br><br><span class="text-blue-300">💡 <strong>Ejemplo:</strong></span> Un ensayo defendiendo la reducción de plásticos usando datos científicos.' },
+                { type: 'Empieza por', question: 'Figura literaria que consiste en oponer dos ideas o términos contrarios.', answers: ['antitesis'], hint: 'Es el contraste directo entre dos conceptos. Ej: "Es tan corto el amor, y tan largo el olvido".', explanation: 'La <strong>antítesis</strong> contrapone dos sintagmas o frases de significado opuesto para resaltar el contraste, pero sin llegar a la contradicción lógica (como sí ocurre en el oxímoron).<br><br><span class="text-blue-300">💡 <strong>Ejemplo:</strong></span> "Un pequeño paso para un hombre, pero un gran salto para la humanidad".' }
+            ],
+            'B': [
+                { type: 'Empieza por', question: 'Movimiento literario del siglo XVII caracterizado por el pesimismo y la complejidad.', answers: ['barroco'], hint: 'Época del Siglo de Oro en la que destacaron Quevedo y Góngora.', explanation: 'El <strong>Barroco</strong> refleja la crisis del siglo XVII. Se abandona el optimismo renacentista y la literatura se vuelve recargada a través del Culteranismo y el Conceptismo.' },
+                { type: 'Empieza por', question: 'Situación lingüística en la que los hablantes de un territorio dominan y usan dos lenguas.', answers: ['bilinguismo'], hint: 'Ocurre en comunidades como Galicia, Cataluña o País Vasco.', explanation: 'El <strong>bilingüismo</strong> es la capacidad de usar dos lenguas en cualquier situación comunicativa con idéntica eficacia. Cuando una de las dos lenguas predomina social o institucionalmente sobre la otra, hablamos de <em>diglosia</em>.' }
+            ],
+            'C': [
+                { type: 'Empieza por', question: 'Oración compuesta formada por proposiciones sintácticamente independientes.', answers: ['coordinada', 'oracion coordinada'], hint: 'Suelen ir unidas por conjunciones como "y", "o", "pero".', explanation: 'Las oraciones <strong>coordinadas</strong> están al mismo nivel sintáctico; ninguna es principal ni subordinada de la otra.<br><br><span class="text-blue-300">💡 <strong>Ejemplo:</strong></span> "María estudia Lengua (1) <strong>y</strong> Juan lee un libro (2)".' },
+                { type: 'Empieza por', question: 'Poema épico medieval, de autoría anónima, que relata las hazañas de un héroe.', answers: ['cantar de gesta', 'cantar'], hint: 'El de "Mio Cid" es el más famoso de España.', explanation: 'Los <strong>cantares de gesta</strong> pertenecen a la poesía épica (mester de juglaría). Eran recitados de memoria por los juglares en las plazas de los pueblos para informar y entretener.' }
+            ],
+            'D': [
+                { type: 'Empieza por', question: 'Modalidad textual que explica detalladamente cómo son las personas o los lugares.', answers: ['descripcion', 'texto descriptivo'], hint: 'Se suele definir como "pintar con palabras".', explanation: 'La <strong>descripción</strong> paraliza la acción del relato. Destacan en ella los adjetivos calificativos, los verbos copulativos y el uso de metáforas o comparaciones.' },
+                { type: 'Empieza por', question: 'Palabra que precede al sustantivo para concretarlo y marcar su género y número.', answers: ['determinante'], hint: 'Los artículos, demostrativos o posesivos lo son.', explanation: 'El <strong>determinante</strong> actualiza al sustantivo y lo sitúa en el espacio o en la posesión.<br><br><span class="text-blue-300">💡 <strong>Ejemplo:</strong></span> En "<strong>Ese</strong> coche rojo", <em>Ese</em> es determinante demostrativo, limitando el significado a un coche concreto.' }
+            ],
+            'E': [
+                { type: 'Empieza por', question: 'Género literario en el que se relatan hazañas de héroes.', answers: ['epica', 'genero epico'], hint: 'La Ilíada y el Cantar de mio Cid son ejemplos.', explanation: 'La <strong>épica</strong> canta las hazañas bélicas de un héroe que encarna los valores de su comunidad.' },
+                { type: 'Empieza por', question: 'Texto argumentativo en prosa donde el autor reflexiona subjetivamente sobre un tema.', answers: ['ensayo'], hint: 'Lo cultivaron mucho los autores de la Generación del 98 como Unamuno.', explanation: 'El <strong>ensayo</strong> es un género didáctico-argumentativo. No busca agotar un tema ni ser puramente objetivo, sino ofrecer la visión personal y crítica del autor sobre literatura, filosofía, política, etc.' }
+            ],
+            'F': [
+                { type: 'Empieza por', question: 'Función del lenguaje utilizada para comprobar o mantener el canal de comunicación.', answers: ['fatica', 'funcion fatica'], hint: 'Se usa al decir "¿Me oyes?" o "Ajá".', explanation: 'La función <strong>fática</strong> se centra en el CANAL. No transmite información nueva, solo verifica que la conexión emisor-receptor sigue abierta.' },
+                { type: 'Empieza por', question: 'Unidad lingüística mínima sin significado que permite distinguir palabras.', answers: ['fonema'], hint: 'La diferencia entre "Pata" y "Bata" es solo uno de ellos.', explanation: 'Los <strong>fonemas</strong> son las imágenes mentales de los sonidos. Al conmutar un fonema por otro (P por B), cambia el significado completo de la palabra.' }
+            ],
+            'G': [
+                { type: 'Empieza por', question: 'Poeta renacentista español que consolidó el endecasílabo y el soneto.', answers: ['garcilaso', 'garcilaso de la vega'], hint: 'Escribió las famosas Églogas (Salicio y Nemoroso).', explanation: '<strong>Garcilaso de la Vega</strong> introdujo en España la métrica italiana. Sus grandes temas son el amor no correspondido y la naturaleza idealizada (locus amoenus).' },
+                { type: 'Empieza por', question: 'Máximo representante del Culteranismo poético en el Barroco español.', answers: ['gongora', 'luis de gongora'], hint: 'Fue el gran archienemigo literario de Quevedo.', explanation: 'Luis de <strong>Góngora</strong> creó un estilo dirigido a las minorías cultas, lleno de cultismos latinos, hipérbatos extremos y metáforas oscuras y bellísimas.' }
+            ],
+            'H': [
+                { type: 'Empieza por', question: 'Figura literaria que consiste en alterar el orden lógico de las palabras.', answers: ['hiperbaton'], hint: 'Como habla Yoda: "Volverán las oscuras golondrinas en tu balcón sus nidos a colgar".', explanation: 'El <strong>hipérbaton</strong> altera la sintaxis habitual para destacar palabras, imitar al latín o cuadrar la rima.' },
+                { type: 'Empieza por', question: 'Figura literaria que consiste en una exageración desproporcionada de la realidad.', answers: ['hiperbole'], hint: 'Ejemplo: "Te lo he dicho un millón de veces".', explanation: 'La <strong>hipérbole</strong> deforma la realidad amplificándola o disminuyéndola. <br><br><span class="text-blue-300">💡 <strong>Ejemplo:</strong></span> "Érase un hombre a una nariz pegado" (Quevedo).' }
+            ],
+            'I': [
+                { type: 'Empieza por', question: 'Figura que consiste en dar a entender lo contrario de lo que se dice expresamente.', answers: ['ironia'], hint: 'Si llueve a cántaros y dices: "¡Menudo día de playa!".', explanation: 'La <strong>ironía</strong> requiere que el receptor entienda el contexto para descifrar que el mensaje literal significa exactamente lo opuesto.' },
+                { type: 'Empieza por', question: 'Movimiento cultural e intelectual del siglo XVIII basado en la razón.', answers: ['ilustracion'], hint: 'A ese siglo se le conoce como el "Siglo de las Luces".', explanation: 'La <strong>Ilustración</strong> defendía que la razón humana y la educación podían combatir la ignorancia y construir un mundo mejor. En literatura, dio paso al Neoclasicismo.' }
+            ],
+            'J': [
+                { type: 'Empieza por', question: 'Breves composiciones líricas populares en lengua mozárabe (s. XI).', answers: ['jarcha', 'jarchas'], hint: 'Lamentos amorosos de una mujer, incluidos al final de las moaxajas.', explanation: 'Las <strong>jarchas</strong> son los primeros testimonios literarios en lengua romance de la Península. Una joven llora por la ausencia de su "habib" (amado).' },
+                { type: 'Empieza por', question: 'Artista medieval que se ganaba la vida recitando poesía y cantares de gesta.', answers: ['juglar'], hint: 'Dieron nombre al "Mester" característico de los siglos XII y XIII.', explanation: 'El <strong>juglar</strong> actuaba en plazas y castillos mezclando el recitado de poesía épica con acrobacias y música para entretener al pueblo analfabeto.' }
+            ],
+            'L': [
+                { type: 'Empieza por', question: 'Creador de la Comedia Nueva en el Barroco (Fénix de los Ingenios).', answers: ['lope', 'lope de vega'], hint: 'Escribió "Fuenteovejuna".', explanation: '<strong>Lope de Vega</strong> rompió la regla de las tres unidades clásicas y triunfó mezclando lo trágico y lo cómico en sus obras.' },
+                { type: 'Empieza por', question: 'Género literario en el que el autor expresa sus sentimientos, emociones o intimidad.', answers: ['lirica', 'genero lirico'], hint: 'A diferencia de la narrativa, no suele contar una historia con personajes.', explanation: 'La <strong>lírica</strong> se caracteriza por la subjetividad. Se asocia tradicionalmente al verso, aunque también existe la prosa poética.' }
+            ],
+            'M': [
+                { type: 'Empieza por', question: 'Identificación de un término real con uno imaginario por su semejanza.', answers: ['metafora'], hint: 'Ej: "Las perlas de tu boca".', explanation: 'La <strong>metáfora</strong> sustituye un elemento real por uno imaginario sin usar nexos comparativos como "cual" o "como".' },
+                { type: 'Empieza por', question: 'Unidad mínima de la lengua que posee significado léxico o gramatical.', answers: ['morfema'], hint: 'Pueden ser lexemas (raíz) o afijos (prefijos y sufijos).', explanation: 'El <strong>morfema</strong> es la unidad que estudia la Morfología. Al añadir sufijos (morfemas derivativos) a una raíz, creamos nuevas palabras.' }
+            ],
+            'N': [
+                { type: 'Empieza por', question: 'Voz ficticia que cuenta la historia y organiza la trama.', answers: ['narrador'], hint: 'Puede ser omnisciente, protagonista o testigo.', explanation: 'El <strong>narrador</strong> es un elemento interno de la novela creado por el autor físico para relatar los hechos.' },
+                { type: 'Empieza por', question: 'Palabra de nueva creación o importada de otro idioma que se incorpora a la lengua.', answers: ['neologismo'], hint: 'Palabras como "Ciberataque" o "Postear" lo son.', explanation: 'Un <strong>neologismo</strong> responde a la necesidad de nombrar nuevas realidades, invenciones o conceptos sociales.' }
+            ],
+            'Ñ': [
+                { type: 'Contiene la', question: 'Texto periodístico breve que valora críticamente una obra (libro, película...).', answers: ['reseña'], hint: 'La buscas antes de ir a ver una película al cine.', explanation: 'La <strong>reseña</strong> es un texto expositivo-argumentativo: informa sobre el argumento y añade la crítica o valoración personal del autor.' },
+                { type: 'Contiene la', question: 'Cada uno de los recuadros que componen la narración visual de un cómic.', answers: ['viñeta'], hint: 'Es la unidad básica de lectura en los tebeos.', explanation: 'La <strong>viñeta</strong> delimita el espacio y el tiempo de la acción en la narrativa gráfica.' }
+            ],
+            'O': [
+                { type: 'Empieza por', question: 'Figura retórica que combina dos palabras de significado opuesto.', answers: ['oximoron'], hint: 'Ejemplo: "Un silencio atronador".', explanation: 'El <strong>oxímoron</strong> genera un significado paradójico al unir dos conceptos incompatibles sintácticamente.' },
+                { type: 'Empieza por', question: 'Unidad sintáctica independiente que contiene al menos un verbo conjugado.', answers: ['oracion'], hint: 'Si no tiene verbo, se le llama simplemente frase.', explanation: 'La <strong>oración</strong> se compone generalmente de un Sujeto (explícito o elidido) y un Predicado.' }
+            ],
+            'P': [
+                { type: 'Empieza por', question: 'Unión de verbo auxiliar y principal que funcionan como un solo núcleo sintáctico.', answers: ['perifrasis', 'perifrasis verbal'], hint: 'Ejemplo: "Tengo que estudiar" o "Me eché a reír".', explanation: 'En las <strong>perífrasis</strong>, el primer verbo pierde su significado para aportar valores de obligación, duda, o aspecto de la acción.' },
+                { type: 'Empieza por', question: 'Figura retórica que atribuye cualidades humanas a animales o seres inanimados.', answers: ['personificacion', 'prosopopeya'], hint: 'Ejemplo: "El viento suspiraba de tristeza".', explanation: 'La <strong>personificación</strong> dota de voluntad, voz o sentimientos humanos a elementos de la naturaleza o conceptos abstractos.' }
+            ],
+            'Q': [
+                { type: 'Empieza por', question: 'Apellido del principal autor del Conceptismo literario en el Barroco español.', answers: ['quevedo', 'francisco de quevedo'], hint: 'Autor de "El Buscón".', explanation: 'Francisco de <strong>Quevedo</strong> dominaba el lenguaje para exprimir significados dobles, ironías y críticas a la sociedad decadente de su época.' },
+                { type: 'Contiene la', question: 'Nombre de la obra cumbre de Miguel de Cervantes, publicada en 1605.', answers: ['quijote', 'don quijote de la mancha'], hint: 'Satiriza los libros de caballerías.', explanation: 'El <strong>Quijote</strong> es considerada la primera novela moderna. Destaca por su polifonía, sus diálogos y la evolución psicológica de los personajes (quijotización y sanchificación).' }
+            ],
+            'R': [
+                { type: 'Empieza por', question: 'Movimiento del siglo XIX que exalta el "yo", la libertad y los sentimientos.', answers: ['romanticismo'], hint: 'Bécquer y Espronceda son de esta época.', explanation: 'El <strong>Romanticismo</strong> rompe las reglas neoclásicas, buscando la inspiración en paisajes lúgubres, rebeldía y amores trágicos.' },
+                { type: 'Empieza por', question: 'Movimiento del siglo XVI que recupera los ideales de armonía y belleza clásicos.', answers: ['renacimiento'], hint: 'Garcilaso de la Vega es su gran exponente poético.', explanation: 'El <strong>Renacimiento</strong> sitúa al ser humano en el centro (Antropocentrismo) frente al teocentrismo medieval.' }
+            ],
+            'S': [
+                { type: 'Empieza por', question: 'Oración compuesta que depende sintácticamente de otra principal.', answers: ['subordinada', 'oracion subordinada'], hint: 'Actúan como un sintagma (Sustantivas, adjetivas o adverbiales).', explanation: 'La oración <strong>subordinada</strong> se incrusta en la estructura de la principal para realizar funciones como Sujeto, CD o Complemento del Nombre.' },
+                { type: 'Empieza por', question: 'Composición poética formada por 14 versos endecasílabos (dos cuartetos y dos tercetos).', answers: ['soneto'], hint: 'El poema "Un soneto me manda hacer Violante" lo explica a la perfección.', explanation: 'El <strong>soneto</strong> fue la estrofa culta más prestigiosa del Renacimiento y Barroco, perfecta para argumentar ideas o sentimientos complejos.' }
+            ],
+            'T': [
+                { type: 'Empieza por', question: 'Idea principal u opinión que un autor defiende en un texto argumentativo.', answers: ['tesis'], hint: 'Es la postura del autor ante el tema que trata.', explanation: 'La <strong>tesis</strong> es la columna vertebral del texto argumentativo. Se apoya mediante datos, citas o ejemplos (argumentos).' },
+                { type: 'Empieza por', question: 'Subgénero teatral de origen griego protagonizado por personajes nobles con un final funesto.', answers: ['tragedia'], hint: 'El destino de los personajes suele ser trágico (muerte o locura).', explanation: 'La <strong>tragedia</strong> busca provocar compasión y terror en el espectador (catarsis). Bodas de Sangre, de Lorca, es un ejemplo moderno.' }
+            ],
+            'U': [
+                { type: 'Contiene la', question: 'Función sintáctica que concuerda obligatoriamente en número y persona con el verbo.', answers: ['sujeto'], hint: 'La prueba es cambiar el número del verbo y ver qué cambia.', explanation: 'El <strong>sujeto</strong> no siempre es el que "hace" la acción (a veces la recibe en las pasivas). Lo que no falla es la prueba de concordancia.' },
+                { type: 'Contiene la', question: 'Palabra o rodeo de palabras que sustituye a otra que se considera tabú o malsonante.', answers: ['eufemismo'], hint: 'Ej: Decir "tercera edad" en vez de "viejos".', explanation: 'El <strong>eufemismo</strong> disimula la crudeza de conceptos relacionados con la muerte, la enfermedad o temas políticos controvertidos.' }
+            ],
+            'V': [
+                { type: 'Empieza por', question: 'Elemento gramatical extraoracional que sirve para llamar la atención del oyente.', answers: ['vocativo'], hint: 'Va siempre aislado por comas. Ej: "Pepe, ven".', explanation: 'El <strong>vocativo</strong> es una llamada directa al receptor. No forma parte del Sujeto ni del Predicado.' },
+                { type: 'Empieza por', question: 'Categoría gramatical que expresa acción, proceso o estado y constituye el núcleo del predicado.', answers: ['verbo'], hint: 'Tiene persona, número, tiempo, modo y aspecto.', explanation: 'El <strong>verbo</strong> es la única categoría gramatical indispensable para formar una oración por sí solo (ej. "¡Llueve!").' }
+            ],
+            'X': [
+                { type: 'Contiene la', question: 'Parte de la gramática que estudia cómo se combinan las palabras para formar oraciones.', answers: ['sintaxis'], hint: 'Busca los sintagmas, CD, CI, CC...', explanation: 'La <strong>sintaxis</strong> analiza las funciones lógicas de los bloques de palabras dentro de la estructura oracional.' },
+                { type: 'Contiene la', question: 'Conjunto de palabras que conforman un idioma o que domina una persona.', answers: ['lexico', 'vocabulario'], hint: 'La Semántica es la disciplina que estudia el significado de este conjunto.', explanation: 'El <strong>léxico</strong> de una lengua es un inventario abierto, en constante evolución por la incorporación de neologismos y la pérdida de arcaísmos.' }
+            ],
+            'Y': [
+                { type: 'Contiene la', question: 'Poema narrativo extenso que relata acciones heroicas de la Antigüedad Clásica.', answers: ['epopeya'], hint: 'La Ilíada y la Odisea lo son.', explanation: 'La <strong>epopeya</strong> es el origen de la épica occidental, caracterizada por la intervención directa de los dioses mitológicos en el destino de los hombres.' },
+                { type: 'Contiene la', question: 'Figura retórica que consiste en la imitación lingüística de un sonido natural.', answers: ['onomatopeya'], hint: 'Ej: El "tic-tac" del reloj o el "guau" del perro.', explanation: 'La <strong>onomatopeya</strong> puede funcionar como sustantivo o integrarse rítmicamente en los versos poéticos para mayor sonoridad.' }
+            ],
+            'Z': [
+                { type: 'Contiene la', question: 'Accidente del verbo que indica si el sujeto realiza la acción o la recibe pasivamente.', answers: ['voz'], hint: 'Puede ser "Activa" o "Pasiva".', explanation: 'En la <strong>voz activa</strong> el sujeto es agente; en la pasiva, el sujeto es paciente y la acción la ejecuta el Complemento Agente.' },
+                { type: 'Empieza por', question: 'Género escénico musical típico de España que alterna partes cantadas y partes habladas.', answers: ['zarzuela'], hint: 'Ejemplos clásicos: "La verbena de la Paloma".', explanation: 'La <strong>zarzuela</strong> surgió en el siglo XVII como teatro popular, integrando música, costumbres, bailes y diálogos hablados.' }
+            ]
+        };
 
         /* ==========================================================================
-           MOTOR DE AUDIO
+           MOTOR DE AUDIO A PRUEBA DE FALLOS
            ========================================================================== */
         const AudioFX = {
             ctx: null, enabled: false,
@@ -419,9 +370,7 @@
                     window.AudioContext = window.AudioContext || window.webkitAudioContext;
                     this.ctx = new AudioContext();
                     this.enabled = true;
-                } catch(e) { 
-                    console.log("Audio no soportado"); 
-                }
+                } catch(e) { console.log("Audio no soportado"); }
             },
             play(freq, type, dur, vol=1) {
                 if(!this.enabled || !this.ctx) return;
@@ -509,7 +458,14 @@
                     AudioFX.init();
                     FX.init();
                     
-                    this.questions = DATABASE.map(q => ({ ...q, status: 'pending' }));
+                    // LÓGICA DE SELECCIÓN ALEATORIA:
+                    // De cada letra, cogemos aleatoriamente UNA de sus posibles preguntas.
+                    this.questions = Object.keys(QUESTION_POOL).map(letter => {
+                        const letterPool = QUESTION_POOL[letter];
+                        const randomQuestion = letterPool[Math.floor(Math.random() * letterPool.length)];
+                        return { letter: letter, ...randomQuestion, status: 'pending' };
+                    });
+
                     this.currentQIndex = 0;
                     this.currentTeam = 0;
                     this.teams.forEach(t => t.score = 0);
@@ -590,7 +546,6 @@
             loadQuestion() {
                 if(!this.isActive) return;
                 
-                // Ocultar pista
                 const hintContainer = document.getElementById('hint-display');
                 if(hintContainer) {
                     hintContainer.classList.add('hidden');
@@ -623,7 +578,6 @@
                     hintContainer.classList.remove('hidden');
                     AudioFX.hint();
                     
-                    // Asegurar foco para que sigan jugando rápido
                     const input = document.getElementById('answer-input');
                     if(input) input.focus();
                 }
@@ -688,7 +642,6 @@
 
                 modal.classList.remove('hidden');
                 
-                // Resetear scroll interno
                 document.querySelector('#modal-panel > div.overflow-y-auto').scrollTop = 0;
 
                 setTimeout(() => {
