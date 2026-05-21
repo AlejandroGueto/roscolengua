@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rosco Repaso | Lengua y Literatura 1º Bachillerato</title>
-    <!-- Tailwind CSS para los estilos rápidos -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
     
@@ -108,7 +107,7 @@
             pointer-events: none; z-index: 0; opacity: 0.6;
         }
 
-        /* Scrollbar personalizada para modales largos */
+        /* Scrollbar personalizada */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #1e293b; border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
@@ -117,10 +116,8 @@
 </head>
 <body class="flex flex-col min-h-screen">
 
-    <!-- Fondo de Partículas -->
     <canvas id="fx-canvas"></canvas>
 
-    <!-- PANTALLA DE INICIO -->
     <div id="start-screen" class="relative z-10 min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-blue-900/20 to-slate-900">
         <div class="glass-panel p-8 md:p-12 rounded-3xl max-w-2xl w-full text-center border-t border-blue-500/30">
             <h1 class="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-teal-300 to-blue-500 mb-4">
@@ -131,8 +128,8 @@
             <div class="text-left bg-slate-800/50 p-6 rounded-2xl mb-10 text-slate-300 border border-slate-700/50">
                 <h3 class="text-blue-400 font-bold mb-3 uppercase tracking-wider text-sm">Reglas del Torneo</h3>
                 <ul class="space-y-3 text-sm md:text-base">
-                    <li><strong class="text-blue-500">▹</strong> Se juega por equipos. El turno salta al fallar o pasar.</li>
-                    <li><strong class="text-blue-500">▹</strong> Las preguntas se generan aleatoriamente en cada nueva partida.</li>
+                    <li><strong class="text-blue-500">▹</strong> Se juega por equipos. <strong>Cada equipo tiene su propio rosco</strong>.</li>
+                    <li><strong class="text-blue-500">▹</strong> El turno salta al fallar o pasar.</li>
                     <li><strong class="text-blue-500">▹</strong> El tiempo total es de <strong class="text-emerald-400">10 minutos</strong>.</li>
                     <li><strong class="text-blue-500">▹</strong> Usa el botón de <strong class="text-purple-400">Pista</strong> si te quedas atascado.</li>
                     <li><strong class="text-blue-500">▹</strong> Usa <strong>[Enter]</strong> para comprobar y <strong>[Espacio]</strong> (con el cajón vacío) para pasar.</li>
@@ -145,10 +142,8 @@
         </div>
     </div>
 
-    <!-- PANTALLA DEL JUEGO -->
     <div id="game-screen" class="hidden relative z-10 min-h-screen flex-col items-center py-6 px-4 w-full bg-gradient-to-b from-slate-900 to-[#0a0f1a]">
         
-        <!-- Marcadores Equipos -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-6xl mb-8 px-2">
             <div id="team-0" class="glass-panel flex flex-col items-center rounded-2xl p-4 border-2 transition-all duration-300">
                 <span class="text-blue-400 font-bold uppercase text-xs mb-2">Equipo 1</span>
@@ -168,10 +163,8 @@
             </div>
         </div>
 
-        <!-- Rosco y Controles -->
         <div class="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl gap-10 xl:gap-20">
             
-            <!-- EL ROSCO -->
             <div class="rosco-wrapper flex items-center justify-center">
                 <div id="timer-container" class="absolute z-10 flex flex-col items-center justify-center bg-slate-900/90 rounded-full w-24 h-24 md:w-32 md:h-32 border-4 border-blue-500/50 shadow-[0_0_30px_rgba(59,130,246,0.3)] backdrop-blur-md transition-colors">
                     <span id="timer" class="text-4xl md:text-5xl font-black text-white">600</span>
@@ -179,7 +172,6 @@
                 <div id="rosco-letters" class="absolute inset-0 z-20"></div>
             </div>
 
-            <!-- Panel de Pregunta -->
             <div class="w-full max-w-lg glass-panel p-8 rounded-3xl flex flex-col shadow-2xl relative overflow-hidden">
                 <div class="flex items-center justify-between mb-4">
                     <div id="current-team-indicator" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase border">
@@ -194,7 +186,6 @@
                 
                 <p id="question-text" class="text-xl md:text-2xl text-slate-100 mb-4 min-h-[100px] font-medium leading-relaxed"></p>
                 
-                <!-- Área de pista -->
                 <div id="hint-display" class="hidden text-purple-300 font-medium text-sm bg-purple-900/30 p-4 rounded-xl border border-purple-500/30 mb-6 transition-all duration-300 shadow-inner"></div>
                 
                 <div id="input-container" class="flex flex-col gap-4">
@@ -217,7 +208,6 @@
         </div>
     </div>
 
-    <!-- MODAL DE EXPLICACIÓN EXTENDIDO -->
     <div id="explanation-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/95 backdrop-blur-sm p-4 transition-opacity duration-300 opacity-0">
         <div id="modal-panel" class="bg-slate-800 border-2 rounded-3xl max-w-3xl w-full shadow-2xl flex flex-col max-h-[90vh] transform scale-95 transition-transform duration-300">
             
@@ -226,11 +216,10 @@
                 <p class="text-slate-300 text-lg">La respuesta correcta era: <strong id="modal-answer" class="text-white text-xl ml-2 bg-black/30 px-3 py-1 rounded-lg"></strong></p>
             </div>
 
-            <!-- Área con Scroll para explicaciones largas -->
             <div class="p-8 bg-slate-900/50 overflow-y-auto flex-grow">
                 <h3 class="text-blue-400 font-bold mb-4 uppercase text-sm tracking-wider flex items-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                    Aclaración Pedagógica y Ejemplos
+                    Aclaración Pedagógica
                 </h3>
                 <div id="modal-explanation" class="text-lg text-slate-300 leading-relaxed space-y-4"></div>
             </div>
@@ -243,7 +232,6 @@
         </div>
     </div>
 
-    <!-- PANTALLA FINAL -->
     <div id="end-screen" class="hidden relative z-10 min-h-screen flex flex-col items-center justify-center p-4 bg-[#0a0f1a]">
         <div class="glass-panel p-10 rounded-3xl max-w-2xl w-full text-center">
             <h2 class="text-5xl font-black text-amber-500 mb-4 uppercase">Torneo Finalizado</h2>
@@ -256,106 +244,53 @@
     </div>
 
     <script>
-        // BANCO DE PREGUNTAS DINÁMICO (2 opciones por letra)
+        // BANCO DE PREGUNTAS DINÁMICO (Incluye cuestiones extraídas del PDF adjunto)
         const QUESTION_POOL = {
             'A': [
-                { type: 'Empieza por', question: 'Tipo de texto en el que se defiende una idea o tesis aportando razones o argumentos.', answers: ['argumentacion', 'argumentativo', 'texto argumentativo'], hint: 'Se usa mucho en los artículos de opinión o en debates.', explanation: 'La <strong>argumentación</strong> busca persuadir al receptor sobre una tesis concreta mediante argumentos racionales, datos objetivos o apelaciones emocionales.<br><br><span class="text-blue-300">💡 <strong>Ejemplo:</strong></span> Un ensayo defendiendo la reducción de plásticos usando datos científicos.' },
-                { type: 'Empieza por', question: 'Figura literaria que consiste en oponer dos ideas o términos contrarios.', answers: ['antitesis'], hint: 'Es el contraste directo entre dos conceptos. Ej: "Es tan corto el amor, y tan largo el olvido".', explanation: 'La <strong>antítesis</strong> contrapone dos sintagmas o frases de significado opuesto para resaltar el contraste, pero sin llegar a la contradicción lógica (como sí ocurre en el oxímoron).<br><br><span class="text-blue-300">💡 <strong>Ejemplo:</strong></span> "Un pequeño paso para un hombre, pero un gran salto para la humanidad".' }
+                { type: 'Empieza por', question: 'Verbo parasintético que aparece en el examen y se forma a partir de la raíz terr-.', answers: ['aterrizar'], hint: 'Acabar un vuelo.', explanation: 'Aterrizar está formada por el prefijo a-, el lexema terr- y el sufijo verbalizador -izar.' },
+                { type: 'Empieza por', question: 'Tipo de texto en el que se defiende una idea o tesis aportando razones o argumentos.', answers: ['argumentacion', 'argumentativo', 'texto argumentativo'], hint: 'Se usa mucho en los artículos de opinión o en debates.', explanation: 'La <strong>argumentación</strong> busca persuadir al receptor sobre una tesis concreta mediante argumentos racionales, datos objetivos o apelaciones emocionales.<br><br><span class="text-blue-300">💡 <strong>Ejemplo:</strong></span> Un ensayo defendiendo la reducción de plásticos usando datos científicos.' }
             ],
             'B': [
                 { type: 'Empieza por', question: 'Movimiento literario del siglo XVII caracterizado por el pesimismo y la complejidad.', answers: ['barroco'], hint: 'Época del Siglo de Oro en la que destacaron Quevedo y Góngora.', explanation: 'El <strong>Barroco</strong> refleja la crisis del siglo XVII. Se abandona el optimismo renacentista y la literatura se vuelve recargada a través del Culteranismo y el Conceptismo.' },
-                { type: 'Empieza por', question: 'Situación lingüística en la que los hablantes de un territorio dominan y usan dos lenguas.', answers: ['bilinguismo'], hint: 'Ocurre en comunidades como Galicia, Cataluña o País Vasco.', explanation: 'El <strong>bilingüismo</strong> es la capacidad de usar dos lenguas en cualquier situación comunicativa con idéntica eficacia. Cuando una de las dos lenguas predomina social o institucionalmente sobre la otra, hablamos de <em>diglosia</em>.' }
+                { type: 'Empieza por', question: 'Situación lingüística en la que los hablantes de un territorio dominan y usan dos lenguas.', answers: ['bilinguismo'], hint: 'Ocurre en comunidades como Galicia, Cataluña o País Vasco.', explanation: 'El <strong>bilingüismo</strong> es la capacidad de usar dos lenguas en cualquier situación comunicativa con idéntica eficacia.' }
             ],
             'C': [
-                { type: 'Empieza por', question: 'Oración compuesta formada por proposiciones sintácticamente independientes.', answers: ['coordinada', 'oracion coordinada'], hint: 'Suelen ir unidas por conjunciones como "y", "o", "pero".', explanation: 'Las oraciones <strong>coordinadas</strong> están al mismo nivel sintáctico; ninguna es principal ni subordinada de la otra.<br><br><span class="text-blue-300">💡 <strong>Ejemplo:</strong></span> "María estudia Lengua (1) <strong>y</strong> Juan lee un libro (2)".' },
-                { type: 'Empieza por', question: 'Poema épico medieval, de autoría anónima, que relata las hazañas de un héroe.', answers: ['cantar de gesta', 'cantar'], hint: 'El de "Mio Cid" es el más famoso de España.', explanation: 'Los <strong>cantares de gesta</strong> pertenecen a la poesía épica (mester de juglaría). Eran recitados de memoria por los juglares en las plazas de los pueblos para informar y entretener.' }
+                { type: 'Empieza por', question: 'Principio pragmático que se viola flagrantemente en el correo al usar "¡Eh, tú!" hacia una autoridad.', answers: ['cortesia', 'principio de cortesia'], hint: 'Ataca la imagen negativa del director.', explanation: 'El texto del examen viola el registro formal y la cortesía institucional que se le presupone a un correo dirigido al Director de la Biblioteca Nacional.' },
+                { type: 'Empieza por', question: 'Oración compuesta formada por proposiciones sintácticamente independientes.', answers: ['coordinada', 'oracion coordinada'], hint: 'Suelen ir unidas por conjunciones como "y", "o", "pero".', explanation: 'Las oraciones <strong>coordinadas</strong> están al mismo nivel sintáctico; ninguna es principal ni subordinada de la otra.' }
             ],
             'D': [
-                { type: 'Empieza por', question: 'Modalidad textual que explica detalladamente cómo son las personas o los lugares.', answers: ['descripcion', 'texto descriptivo'], hint: 'Se suele definir como "pintar con palabras".', explanation: 'La <strong>descripción</strong> paraliza la acción del relato. Destacan en ella los adjetivos calificativos, los verbos copulativos y el uso de metáforas o comparaciones.' },
-                { type: 'Empieza por', question: 'Palabra que precede al sustantivo para concretarlo y marcar su género y número.', answers: ['determinante'], hint: 'Los artículos, demostrativos o posesivos lo son.', explanation: 'El <strong>determinante</strong> actualiza al sustantivo y lo sitúa en el espacio o en la posesión.<br><br><span class="text-blue-300">💡 <strong>Ejemplo:</strong></span> En "<strong>Ese</strong> coche rojo", <em>Ese</em> es determinante demostrativo, limitando el significado a un coche concreto.' }
+                { type: 'Empieza por', question: 'Mecanismo gramatical que se analiza en la pregunta 5 para ubicar elementos en el espacio o tiempo, como "ahí" u "hoy".', answers: ['deixis'], hint: 'Puede ser anáfora o catáfora también.', explanation: 'La deixis señala elementos del contexto (espacial, temporal o personal) o del propio texto.' },
+                { type: 'Empieza por', question: 'Palabra que precede al sustantivo para concretarlo y marcar su género y número.', answers: ['determinante'], hint: 'Los artículos, demostrativos o posesivos lo son.', explanation: 'El <strong>determinante</strong> actualiza al sustantivo y lo sitúa en el espacio o en la posesión.' }
             ],
             'E': [
-                { type: 'Empieza por', question: 'Género literario en el que se relatan hazañas de héroes.', answers: ['epica', 'genero epico'], hint: 'La Ilíada y el Cantar de mio Cid son ejemplos.', explanation: 'La <strong>épica</strong> canta las hazañas bélicas de un héroe que encarna los valores de su comunidad.' },
-                { type: 'Empieza por', question: 'Texto argumentativo en prosa donde el autor reflexiona subjetivamente sobre un tema.', answers: ['ensayo'], hint: 'Lo cultivaron mucho los autores de la Generación del 98 como Unamuno.', explanation: 'El <strong>ensayo</strong> es un género didáctico-argumentativo. No busca agotar un tema ni ser puramente objetivo, sino ofrecer la visión personal y crítica del autor sobre literatura, filosofía, política, etc.' }
+                { type: 'Empieza por', question: 'Género literario en el que se relatan hazañas de héroes.', answers: ['epica', 'genero epico'], hint: 'La Ilíada y el Cantar de mio Cid son ejemplos.', explanation: 'La <strong>épica</strong> canta las hazañas bélicas de un héroe que encarna los valores de su comunidad.' }
             ],
             'F': [
-                { type: 'Empieza por', question: 'Función del lenguaje utilizada para comprobar o mantener el canal de comunicación.', answers: ['fatica', 'funcion fatica'], hint: 'Se usa al decir "¿Me oyes?" o "Ajá".', explanation: 'La función <strong>fática</strong> se centra en el CANAL. No transmite información nueva, solo verifica que la conexión emisor-receptor sigue abierta.' },
-                { type: 'Empieza por', question: 'Unidad lingüística mínima sin significado que permite distinguir palabras.', answers: ['fonema'], hint: 'La diferencia entre "Pata" y "Bata" es solo uno de ellos.', explanation: 'Los <strong>fonemas</strong> son las imágenes mentales de los sonidos. Al conmutar un fonema por otro (P por B), cambia el significado completo de la palabra.' }
-            ],
-            'G': [
-                { type: 'Empieza por', question: 'Poeta renacentista español que consolidó el endecasílabo y el soneto.', answers: ['garcilaso', 'garcilaso de la vega'], hint: 'Escribió las famosas Églogas (Salicio y Nemoroso).', explanation: '<strong>Garcilaso de la Vega</strong> introdujo en España la métrica italiana. Sus grandes temas son el amor no correspondido y la naturaleza idealizada (locus amoenus).' },
-                { type: 'Empieza por', question: 'Máximo representante del Culteranismo poético en el Barroco español.', answers: ['gongora', 'luis de gongora'], hint: 'Fue el gran archienemigo literario de Quevedo.', explanation: 'Luis de <strong>Góngora</strong> creó un estilo dirigido a las minorías cultas, lleno de cultismos latinos, hipérbatos extremos y metáforas oscuras y bellísimas.' }
-            ],
-            'H': [
-                { type: 'Empieza por', question: 'Figura literaria que consiste en alterar el orden lógico de las palabras.', answers: ['hiperbaton'], hint: 'Como habla Yoda: "Volverán las oscuras golondrinas en tu balcón sus nidos a colgar".', explanation: 'El <strong>hipérbaton</strong> altera la sintaxis habitual para destacar palabras, imitar al latín o cuadrar la rima.' },
-                { type: 'Empieza por', question: 'Figura literaria que consiste en una exageración desproporcionada de la realidad.', answers: ['hiperbole'], hint: 'Ejemplo: "Te lo he dicho un millón de veces".', explanation: 'La <strong>hipérbole</strong> deforma la realidad amplificándola o disminuyéndola. <br><br><span class="text-blue-300">💡 <strong>Ejemplo:</strong></span> "Érase un hombre a una nariz pegado" (Quevedo).' }
+                { type: 'Empieza por', question: 'Argumento aparentemente válido pero lógicamente incorrecto, usado para intentar manipular al final del correo interceptado.', answers: ['falacia', 'falacias'], hint: 'Una de ellas es "ad populum" al citar al influencer.', explanation: 'El emisor usa falacias como "un famoso influencer dijo ayer" para manipular al receptor bajo una premisa falsa o de falsa autoridad.' }
             ],
             'I': [
-                { type: 'Empieza por', question: 'Figura que consiste en dar a entender lo contrario de lo que se dice expresamente.', answers: ['ironia'], hint: 'Si llueve a cántaros y dices: "¡Menudo día de playa!".', explanation: 'La <strong>ironía</strong> requiere que el receptor entienda el contexto para descifrar que el mensaje literal significa exactamente lo opuesto.' },
-                { type: 'Empieza por', question: 'Movimiento cultural e intelectual del siglo XVIII basado en la razón.', answers: ['ilustracion'], hint: 'A ese siglo se le conoce como el "Siglo de las Luces".', explanation: 'La <strong>Ilustración</strong> defendía que la razón humana y la educación podían combatir la ignorancia y construir un mundo mejor. En literatura, dio paso al Neoclasicismo.' }
-            ],
-            'J': [
-                { type: 'Empieza por', question: 'Breves composiciones líricas populares en lengua mozárabe (s. XI).', answers: ['jarcha', 'jarchas'], hint: 'Lamentos amorosos de una mujer, incluidos al final de las moaxajas.', explanation: 'Las <strong>jarchas</strong> son los primeros testimonios literarios en lengua romance de la Península. Una joven llora por la ausencia de su "habib" (amado).' },
-                { type: 'Empieza por', question: 'Artista medieval que se ganaba la vida recitando poesía y cantares de gesta.', answers: ['juglar'], hint: 'Dieron nombre al "Mester" característico de los siglos XII y XIII.', explanation: 'El <strong>juglar</strong> actuaba en plazas y castillos mezclando el recitado de poesía épica con acrobacias y música para entretener al pueblo analfabeto.' }
-            ],
-            'L': [
-                { type: 'Empieza por', question: 'Creador de la Comedia Nueva en el Barroco (Fénix de los Ingenios).', answers: ['lope', 'lope de vega'], hint: 'Escribió "Fuenteovejuna".', explanation: '<strong>Lope de Vega</strong> rompió la regla de las tres unidades clásicas y triunfó mezclando lo trágico y lo cómico en sus obras.' },
-                { type: 'Empieza por', question: 'Género literario en el que el autor expresa sus sentimientos, emociones o intimidad.', answers: ['lirica', 'genero lirico'], hint: 'A diferencia de la narrativa, no suele contar una historia con personajes.', explanation: 'La <strong>lírica</strong> se caracteriza por la subjetividad. Se asocia tradicionalmente al verso, aunque también existe la prosa poética.' }
+                { type: 'Empieza por', question: 'Palabra derivada que aparece en el examen, formada a partir de la raíz de la palabra muerte.', answers: ['inmortalidad'], hint: 'Cualidad de no morir.', explanation: 'Inmortalidad tiene el prefijo in-, el lexema mort-, y los sufijos derivativos -al e -idad.' },
+                { type: 'Empieza por', question: 'Figura que consiste en dar a entender lo contrario de lo que se dice expresamente.', answers: ['ironia'], hint: 'Si llueve a cántaros y dices: "¡Menudo día de playa!".', explanation: 'La <strong>ironía</strong> requiere que el receptor entienda el contexto para descifrar que el mensaje literal significa exactamente lo opuesto.' }
             ],
             'M': [
-                { type: 'Empieza por', question: 'Identificación de un término real con uno imaginario por su semejanza.', answers: ['metafora'], hint: 'Ej: "Las perlas de tu boca".', explanation: 'La <strong>metáfora</strong> sustituye un elemento real por uno imaginario sin usar nexos comparativos como "cual" o "como".' },
-                { type: 'Empieza por', question: 'Unidad mínima de la lengua que posee significado léxico o gramatical.', answers: ['morfema'], hint: 'Pueden ser lexemas (raíz) o afijos (prefijos y sufijos).', explanation: 'El <strong>morfema</strong> es la unidad que estudia la Morfología. Al añadir sufijos (morfemas derivativos) a una raíz, creamos nuevas palabras.' }
-            ],
-            'N': [
-                { type: 'Empieza por', question: 'Voz ficticia que cuenta la historia y organiza la trama.', answers: ['narrador'], hint: 'Puede ser omnisciente, protagonista o testigo.', explanation: 'El <strong>narrador</strong> es un elemento interno de la novela creado por el autor físico para relatar los hechos.' },
-                { type: 'Empieza por', question: 'Palabra de nueva creación o importada de otro idioma que se incorpora a la lengua.', answers: ['neologismo'], hint: 'Palabras como "Ciberataque" o "Postear" lo son.', explanation: 'Un <strong>neologismo</strong> responde a la necesidad de nombrar nuevas realidades, invenciones o conceptos sociales.' }
-            ],
-            'Ñ': [
-                { type: 'Contiene la', question: 'Texto periodístico breve que valora críticamente una obra (libro, película...).', answers: ['reseña'], hint: 'La buscas antes de ir a ver una película al cine.', explanation: 'La <strong>reseña</strong> es un texto expositivo-argumentativo: informa sobre el argumento y añade la crítica o valoración personal del autor.' },
-                { type: 'Contiene la', question: 'Cada uno de los recuadros que componen la narración visual de un cómic.', answers: ['viñeta'], hint: 'Es la unidad básica de lectura en los tebeos.', explanation: 'La <strong>viñeta</strong> delimita el espacio y el tiempo de la acción en la narrativa gráfica.' }
-            ],
-            'O': [
-                { type: 'Empieza por', question: 'Figura retórica que combina dos palabras de significado opuesto.', answers: ['oximoron'], hint: 'Ejemplo: "Un silencio atronador".', explanation: 'El <strong>oxímoron</strong> genera un significado paradójico al unir dos conceptos incompatibles sintácticamente.' },
-                { type: 'Empieza por', question: 'Unidad sintáctica independiente que contiene al menos un verbo conjugado.', answers: ['oracion'], hint: 'Si no tiene verbo, se le llama simplemente frase.', explanation: 'La <strong>oración</strong> se compone generalmente de un Sujeto (explícito o elidido) y un Predicado.' }
+                { type: 'Empieza por', question: 'Unidades mínimas con significado en las que debes segmentar palabras como "aterrizar" o "sordomudo".', answers: ['monemas'], hint: 'Se dividen en lexemas y morfemas.', explanation: 'Los monemas son las piezas básicas de significado de la palabra, y el examen exige identificarlos para clasificar el proceso de formación.' }
             ],
             'P': [
-                { type: 'Empieza por', question: 'Unión de verbo auxiliar y principal que funcionan como un solo núcleo sintáctico.', answers: ['perifrasis', 'perifrasis verbal'], hint: 'Ejemplo: "Tengo que estudiar" o "Me eché a reír".', explanation: 'En las <strong>perífrasis</strong>, el primer verbo pierde su significado para aportar valores de obligación, duda, o aspecto de la acción.' },
-                { type: 'Empieza por', question: 'Figura retórica que atribuye cualidades humanas a animales o seres inanimados.', answers: ['personificacion', 'prosopopeya'], hint: 'Ejemplo: "El viento suspiraba de tristeza".', explanation: 'La <strong>personificación</strong> dota de voluntad, voz o sentimientos humanos a elementos de la naturaleza o conceptos abstractos.' }
+                { type: 'Empieza por', question: 'Tipo de palabra según su formación a la que pertenecen "quinceañero" y "picapedrero".', answers: ['parasintetica', 'parasintesis'], hint: 'Formada por composición y derivación a la vez.', explanation: 'Son parasintéticas porque, si quitamos el sufijo o el prefijo, la palabra resultante no existe de forma independiente en la lengua.' }
             ],
             'Q': [
-                { type: 'Empieza por', question: 'Apellido del principal autor del Conceptismo literario en el Barroco español.', answers: ['quevedo', 'francisco de quevedo'], hint: 'Autor de "El Buscón".', explanation: 'Francisco de <strong>Quevedo</strong> dominaba el lenguaje para exprimir significados dobles, ironías y críticas a la sociedad decadente de su época.' },
-                { type: 'Contiene la', question: 'Nombre de la obra cumbre de Miguel de Cervantes, publicada en 1605.', answers: ['quijote', 'don quijote de la mancha'], hint: 'Satiriza los libros de caballerías.', explanation: 'El <strong>Quijote</strong> es considerada la primera novela moderna. Destaca por su polifonía, sus diálogos y la evolución psicológica de los personajes (quijotización y sanchificación).' }
+                { type: 'Empieza por', question: 'Palabra parasintética que ha detectado el cortafuegos heurístico en la tercera pregunta del examen.', answers: ['quinceañero'], hint: 'Persona que tiene quince años.', explanation: 'Se le pide al alumno que explique razonadamente por qué es parasintética comparada con "incansable", la cual es derivada.' }
             ],
             'R': [
-                { type: 'Empieza por', question: 'Movimiento del siglo XIX que exalta el "yo", la libertad y los sentimientos.', answers: ['romanticismo'], hint: 'Bécquer y Espronceda son de esta época.', explanation: 'El <strong>Romanticismo</strong> rompe las reglas neoclásicas, buscando la inspiración en paisajes lúgubres, rebeldía y amores trágicos.' },
-                { type: 'Empieza por', question: 'Movimiento del siglo XVI que recupera los ideales de armonía y belleza clásicos.', answers: ['renacimiento'], hint: 'Garcilaso de la Vega es su gran exponente poético.', explanation: 'El <strong>Renacimiento</strong> sitúa al ser humano en el centro (Antropocentrismo) frente al teocentrismo medieval.' }
+                { type: 'Empieza por', question: 'Movimiento literario sobre el que debes nombrar cuatro autores y obras en la primera pregunta del examen.', answers: ['romanticismo'], hint: 'Destacan autores como Bécquer o Espronceda.', explanation: 'El cuadro de la primera evaluación pide completar cuatro autores y obras de este movimiento literario apasionado y rebelde del siglo XIX.' }
             ],
             'S': [
-                { type: 'Empieza por', question: 'Oración compuesta que depende sintácticamente de otra principal.', answers: ['subordinada', 'oracion subordinada'], hint: 'Actúan como un sintagma (Sustantivas, adjetivas o adverbiales).', explanation: 'La oración <strong>subordinada</strong> se incrusta en la estructura de la principal para realizar funciones como Sujeto, CD o Complemento del Nombre.' },
-                { type: 'Empieza por', question: 'Composición poética formada por 14 versos endecasílabos (dos cuartetos y dos tercetos).', answers: ['soneto'], hint: 'El poema "Un soneto me manda hacer Violante" lo explica a la perfección.', explanation: 'El <strong>soneto</strong> fue la estrofa culta más prestigiosa del Renacimiento y Barroco, perfecta para argumentar ideas o sentimientos complejos.' }
+                { type: 'Empieza por', question: 'Palabra compuesta que aparece para segmentar en el examen, formada por dos adjetivos.', answers: ['sordomudo'], hint: 'Que no oye ni habla.', explanation: 'Está compuesta por dos lexemas independientes que se unen para formar una nueva realidad.' }
             ],
             'T': [
-                { type: 'Empieza por', question: 'Idea principal u opinión que un autor defiende en un texto argumentativo.', answers: ['tesis'], hint: 'Es la postura del autor ante el tema que trata.', explanation: 'La <strong>tesis</strong> es la columna vertebral del texto argumentativo. Se apoya mediante datos, citas o ejemplos (argumentos).' },
-                { type: 'Empieza por', question: 'Subgénero teatral de origen griego protagonizado por personajes nobles con un final funesto.', answers: ['tragedia'], hint: 'El destino de los personajes suele ser trágico (muerte o locura).', explanation: 'La <strong>tragedia</strong> busca provocar compasión y terror en el espectador (catarsis). Bodas de Sangre, de Lorca, es un ejemplo moderno.' }
-            ],
-            'U': [
-                { type: 'Contiene la', question: 'Función sintáctica que concuerda obligatoriamente en número y persona con el verbo.', answers: ['sujeto'], hint: 'La prueba es cambiar el número del verbo y ver qué cambia.', explanation: 'El <strong>sujeto</strong> no siempre es el que "hace" la acción (a veces la recibe en las pasivas). Lo que no falla es la prueba de concordancia.' },
-                { type: 'Contiene la', question: 'Palabra o rodeo de palabras que sustituye a otra que se considera tabú o malsonante.', answers: ['eufemismo'], hint: 'Ej: Decir "tercera edad" en vez de "viejos".', explanation: 'El <strong>eufemismo</strong> disimula la crudeza de conceptos relacionados con la muerte, la enfermedad o temas políticos controvertidos.' }
-            ],
-            'V': [
-                { type: 'Empieza por', question: 'Elemento gramatical extraoracional que sirve para llamar la atención del oyente.', answers: ['vocativo'], hint: 'Va siempre aislado por comas. Ej: "Pepe, ven".', explanation: 'El <strong>vocativo</strong> es una llamada directa al receptor. No forma parte del Sujeto ni del Predicado.' },
-                { type: 'Empieza por', question: 'Categoría gramatical que expresa acción, proceso o estado y constituye el núcleo del predicado.', answers: ['verbo'], hint: 'Tiene persona, número, tiempo, modo y aspecto.', explanation: 'El <strong>verbo</strong> es la única categoría gramatical indispensable para formar una oración por sí solo (ej. "¡Llueve!").' }
-            ],
-            'X': [
-                { type: 'Contiene la', question: 'Parte de la gramática que estudia cómo se combinan las palabras para formar oraciones.', answers: ['sintaxis'], hint: 'Busca los sintagmas, CD, CI, CC...', explanation: 'La <strong>sintaxis</strong> analiza las funciones lógicas de los bloques de palabras dentro de la estructura oracional.' },
-                { type: 'Contiene la', question: 'Conjunto de palabras que conforman un idioma o que domina una persona.', answers: ['lexico', 'vocabulario'], hint: 'La Semántica es la disciplina que estudia el significado de este conjunto.', explanation: 'El <strong>léxico</strong> de una lengua es un inventario abierto, en constante evolución por la incorporación de neologismos y la pérdida de arcaísmos.' }
-            ],
-            'Y': [
-                { type: 'Contiene la', question: 'Poema narrativo extenso que relata acciones heroicas de la Antigüedad Clásica.', answers: ['epopeya'], hint: 'La Ilíada y la Odisea lo son.', explanation: 'La <strong>epopeya</strong> es el origen de la épica occidental, caracterizada por la intervención directa de los dioses mitológicos en el destino de los hombres.' },
-                { type: 'Contiene la', question: 'Figura retórica que consiste en la imitación lingüística de un sonido natural.', answers: ['onomatopeya'], hint: 'Ej: El "tic-tac" del reloj o el "guau" del perro.', explanation: 'La <strong>onomatopeya</strong> puede funcionar como sustantivo o integrarse rítmicamente en los versos poéticos para mayor sonoridad.' }
+                { type: 'Empieza por', question: 'Elemento de un texto argumentativo que debe aparecer claramente al principio si tiene estructura deductiva.', answers: ['tesis'], hint: 'Es la idea principal que se defiende.', explanation: 'El examen pide redactar un texto argumentativo sobre el estudio del lenguaje con estructura deductiva, lo que significa que la tesis va al principio.' }
             ],
             'Z': [
-                { type: 'Contiene la', question: 'Accidente del verbo que indica si el sujeto realiza la acción o la recibe pasivamente.', answers: ['voz'], hint: 'Puede ser "Activa" o "Pasiva".', explanation: 'En la <strong>voz activa</strong> el sujeto es agente; en la pasiva, el sujeto es paciente y la acción la ejecuta el Complemento Agente.' },
                 { type: 'Empieza por', question: 'Género escénico musical típico de España que alterna partes cantadas y partes habladas.', answers: ['zarzuela'], hint: 'Ejemplos clásicos: "La verbena de la Paloma".', explanation: 'La <strong>zarzuela</strong> surgió en el siglo XVII como teatro popular, integrando música, costumbres, bailes y diálogos hablados.' }
             ]
         };
@@ -444,32 +379,35 @@
            MOTOR DEL JUEGO LÓGICO
            ========================================================================== */
         const Game = {
-            questions: [], currentQIndex: 0,
             teams: [
-                { name: 'Equipo 1', score: 0, colorClasses: 'border-blue-500 text-blue-400 bg-blue-900/30 shadow-[0_0_20px_#3b82f6]' },
-                { name: 'Equipo 2', score: 0, colorClasses: 'border-red-500 text-red-400 bg-red-900/30 shadow-[0_0_20px_#ef4444]' },
-                { name: 'Equipo 3', score: 0, colorClasses: 'border-emerald-500 text-emerald-400 bg-emerald-900/30 shadow-[0_0_20px_#10b981]' },
-                { name: 'Equipo 4', score: 0, colorClasses: 'border-amber-500 text-amber-400 bg-amber-900/30 shadow-[0_0_20px_#f59e0b]' }
+                { name: 'Equipo 1', score: 0, colorClasses: 'border-blue-500 text-blue-400 bg-blue-900/30 shadow-[0_0_20px_#3b82f6]', letters: [], currentQIndex: 0 },
+                { name: 'Equipo 2', score: 0, colorClasses: 'border-red-500 text-red-400 bg-red-900/30 shadow-[0_0_20px_#ef4444]', letters: [], currentQIndex: 0 },
+                { name: 'Equipo 3', score: 0, colorClasses: 'border-emerald-500 text-emerald-400 bg-emerald-900/30 shadow-[0_0_20px_#10b981]', letters: [], currentQIndex: 0 },
+                { name: 'Equipo 4', score: 0, colorClasses: 'border-amber-500 text-amber-400 bg-amber-900/30 shadow-[0_0_20px_#f59e0b]', letters: [], currentQIndex: 0 }
             ],
-            currentTeam: 0, time: 6000, timerInterval: null, isActive: false, modalOpen: false,
+            currentTeam: 0, time: 600, timerInterval: null, isActive: false, modalOpen: false,
 
             start() {
                 try {
                     AudioFX.init();
                     FX.init();
                     
-                    // LÓGICA DE SELECCIÓN ALEATORIA:
-                    // De cada letra, cogemos aleatoriamente UNA de sus posibles preguntas.
-                    this.questions = Object.keys(QUESTION_POOL).map(letter => {
+                    // Se genera el banco de preguntas base
+                    const baseQuestions = Object.keys(QUESTION_POOL).map(letter => {
                         const letterPool = QUESTION_POOL[letter];
                         const randomQuestion = letterPool[Math.floor(Math.random() * letterPool.length)];
                         return { letter: letter, ...randomQuestion, status: 'pending' };
                     });
 
-                    this.currentQIndex = 0;
+                    // Cada equipo recibe su propio clon profundo de las preguntas
+                    this.teams.forEach(t => {
+                        t.score = 0;
+                        t.currentQIndex = 0;
+                        t.letters = JSON.parse(JSON.stringify(baseQuestions));
+                    });
+
                     this.currentTeam = 0;
-                    this.teams.forEach(t => t.score = 0);
-                    this.time = 6000;
+                    this.time = 600;
                     this.modalOpen = false;
                     
                     document.getElementById('start-screen').style.display = 'none';
@@ -492,20 +430,19 @@
                 const container = document.getElementById('rosco-letters');
                 container.innerHTML = '';
                 
-                const num = this.questions.length;
+                const num = this.teams[0].letters.length;
                 const isMobile = window.innerWidth < 768;
                 const radius = isMobile ? 140 : 180; 
 
-                this.questions.forEach((q, i) => {
+                // Creamos los elementos DOM una sola vez
+                for(let i = 0; i < num; i++) {
                     const angle = -Math.PI / 2 + (i * 2 * Math.PI / num);
                     const el = document.createElement('div');
-                    el.className = `letter status-pending`;
                     el.id = `letter-${i}`;
                     el.style.left = `calc(50% + ${radius * Math.cos(angle)}px)`;
                     el.style.top = `calc(50% + ${radius * Math.sin(angle)}px)`;
-                    el.innerText = q.letter;
                     container.appendChild(el);
-                });
+                }
             },
 
             updateUI() {
@@ -520,6 +457,7 @@
                     AudioFX.tick();
                 }
 
+                // Actualizar puntuación y resaltado de tarjetas de equipo
                 this.teams.forEach((t, i) => {
                     const scoreEl = document.getElementById(`score-${i}`);
                     if(scoreEl) scoreEl.innerText = t.score;
@@ -535,12 +473,23 @@
                     }
                 });
 
-                const ind = document.getElementById('current-team-indicator');
+                // Actualizar indicador de turno
                 const t = this.teams[this.currentTeam];
+                const ind = document.getElementById('current-team-indicator');
                 if(ind) ind.className = `inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase border shadow-lg transition-all ${t.colorClasses}`;
                 
                 const nameDisplay = document.getElementById('team-name-display');
                 if(nameDisplay) nameDisplay.innerText = `Turno: ${t.name}`;
+
+                // ACTUALIZAR EL ROSCO VISUALMENTE PARA EL EQUIPO ACTUAL
+                const currentTeamLetters = t.letters;
+                currentTeamLetters.forEach((q, i) => {
+                    const el = document.getElementById(`letter-${i}`);
+                    if(el) {
+                        el.innerText = q.letter;
+                        el.className = `letter status-${q.status} ${i === t.currentQIndex ? 'status-active' : ''}`;
+                    }
+                });
             },
 
             loadQuestion() {
@@ -552,12 +501,9 @@
                     hintContainer.innerText = '';
                 }
                 
-                this.questions.forEach((q, i) => {
-                    const el = document.getElementById(`letter-${i}`);
-                    if(el) el.className = `letter status-${q.status} ${i === this.currentQIndex ? 'status-active' : ''}`;
-                });
-
-                const q = this.questions[this.currentQIndex];
+                const t = this.teams[this.currentTeam];
+                const q = t.letters[t.currentQIndex];
+                
                 document.getElementById('question-letter').innerText = q.letter;
                 document.getElementById('question-type').innerText = q.type;
                 document.getElementById('question-text').innerText = q.question;
@@ -573,7 +519,8 @@
                 if (!this.isActive || this.modalOpen) return;
                 const hintContainer = document.getElementById('hint-display');
                 if(hintContainer && hintContainer.classList.contains('hidden')) {
-                    const q = this.questions[this.currentQIndex];
+                    const t = this.teams[this.currentTeam];
+                    const q = t.letters[t.currentQIndex];
                     hintContainer.innerHTML = `<strong>💡 Pista:</strong> ${q.hint}`;
                     hintContainer.classList.remove('hidden');
                     AudioFX.hint();
@@ -592,12 +539,13 @@
                 this.pauseTimer(); 
                 
                 const normalizedInput = val.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-                const q = this.questions[this.currentQIndex];
+                const t = this.teams[this.currentTeam];
+                const q = t.letters[t.currentQIndex];
                 const isCorrect = q.answers.some(a => a.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() === normalizedInput);
 
                 if(isCorrect) {
                     q.status = 'correct';
-                    this.teams[this.currentTeam].score++;
+                    t.score++;
                     AudioFX.correct();
                 } else {
                     q.status = 'incorrect';
@@ -614,9 +562,7 @@
             pasapalabra() {
                 if (!this.isActive || this.modalOpen) return;
                 AudioFX.pass();
-                this.currentTeam = (this.currentTeam + 1) % this.teams.length;
-                this.updateUI();
-                this.advanceQuestion();
+                this.advanceQuestion(true); // El true indica que forzamos salto de turno
             },
 
             showExplanation(isCorrect, questionObj) {
@@ -641,7 +587,6 @@
                 document.getElementById('modal-explanation').innerHTML = questionObj.explanation;
 
                 modal.classList.remove('hidden');
-                
                 document.querySelector('#modal-panel > div.overflow-y-auto').scrollTop = 0;
 
                 setTimeout(() => {
@@ -662,33 +607,58 @@
                     modal.classList.add('hidden');
                     this.modalOpen = false;
                     
-                    if(this.questions[this.currentQIndex].status === 'incorrect') {
-                        this.currentTeam = (this.currentTeam + 1) % this.teams.length;
-                        this.updateUI();
+                    const t = this.teams[this.currentTeam];
+                    if(t.letters[t.currentQIndex].status === 'incorrect') {
+                        this.advanceQuestion(true); // Cambiar turno si ha fallado
+                    } else {
+                        this.advanceQuestion(false); // Mantener turno si acertó
                     }
-                    
                     this.resumeTimer();
-                    this.advanceQuestion();
                 }, 300);
             },
 
-            advanceQuestion() {
-                let found = false;
-                let startSearch = (this.currentQIndex + 1) % this.questions.length;
+            advanceQuestion(switchTurn) {
+                let nextTeamIndex = this.currentTeam;
+
+                // Lógica para saltar al siguiente equipo si falla o hace pasapalabra
+                if (switchTurn) {
+                    let teamFound = false;
+                    for (let i = 1; i <= this.teams.length; i++) {
+                        let checkTeam = (this.currentTeam + i) % this.teams.length;
+                        // Comprobar si ese equipo tiene letras pendientes
+                        if (this.teams[checkTeam].letters.some(q => q.status === 'pending')) {
+                            nextTeamIndex = checkTeam;
+                            teamFound = true;
+                            break;
+                        }
+                    }
+                    if (!teamFound) {
+                        this.endGame();
+                        return;
+                    }
+                }
+
+                this.currentTeam = nextTeamIndex;
+                const t = this.teams[this.currentTeam];
                 
-                for (let i = 0; i < this.questions.length; i++) {
-                    let checkIdx = (startSearch + i) % this.questions.length;
-                    if (this.questions[checkIdx].status === 'pending') {
-                        this.currentQIndex = checkIdx;
-                        found = true;
+                let foundPending = false;
+                let startSearch = (t.currentQIndex + (switchTurn ? 0 : 1)) % t.letters.length;
+                
+                for (let i = 0; i < t.letters.length; i++) {
+                    let checkIdx = (startSearch + i) % t.letters.length;
+                    if (t.letters[checkIdx].status === 'pending') {
+                        t.currentQIndex = checkIdx;
+                        foundPending = true;
                         break;
                     }
                 }
 
-                if(found) {
+                if(foundPending) {
+                    this.updateUI();
                     this.loadQuestion();
                 } else {
-                    this.endGame();
+                    // Si este equipo ha terminado todas sus letras pero sigue su turno, forzamos pasar
+                    this.advanceQuestion(true);
                 }
             },
 
