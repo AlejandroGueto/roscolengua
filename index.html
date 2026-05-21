@@ -130,7 +130,7 @@
                 <ul class="space-y-3 text-sm md:text-base">
                     <li><strong class="text-blue-500">▹</strong> Se juega por equipos. <strong>Cada equipo tiene su propio rosco</strong>.</li>
                     <li><strong class="text-blue-500">▹</strong> El turno salta al fallar o pasar.</li>
-                    <li><strong class="text-blue-500">▹</strong> El tiempo total es de <strong class="text-emerald-400">10 minutos</strong>.</li>
+                    <li><strong class="text-blue-500">▹</strong> El tiempo total es de <strong class="text-emerald-400">30 minutos</strong>.</li>
                     <li><strong class="text-blue-500">▹</strong> Usa el botón de <strong class="text-purple-400">Pista</strong> si te quedas atascado.</li>
                     <li><strong class="text-blue-500">▹</strong> Usa <strong>[Enter]</strong> para comprobar y <strong>[Espacio]</strong> (con el cajón vacío) para pasar.</li>
                 </ul>
@@ -385,7 +385,7 @@
                 { name: 'Equipo 3', score: 0, colorClasses: 'border-emerald-500 text-emerald-400 bg-emerald-900/30 shadow-[0_0_20px_#10b981]', letters: [], currentQIndex: 0 },
                 { name: 'Equipo 4', score: 0, colorClasses: 'border-amber-500 text-amber-400 bg-amber-900/30 shadow-[0_0_20px_#f59e0b]', letters: [], currentQIndex: 0 }
             ],
-            currentTeam: 0, time: 600, timerInterval: null, isActive: false, modalOpen: false,
+            currentTeam: 0, time: 1800, timerInterval: null, isActive: false, modalOpen: false,
 
             start() {
                 try {
@@ -407,7 +407,7 @@
                     });
 
                     this.currentTeam = 0;
-                    this.time = 600;
+                    this.time = 1800;
                     this.modalOpen = false;
                     
                     document.getElementById('start-screen').style.display = 'none';
